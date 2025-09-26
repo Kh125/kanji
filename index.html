@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N5 Kanji Master</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for 3D flip effect and dark mode transition */
+        :root {
+            --flip-duration: 700ms;
+            --timer-duration: 15s;
+        }
+
+        /* Essential 3D properties */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* Card container transition */
+        .card-inner {
+            transition: transform var(--flip-duration);
+        }
+
+        /* Card flipped state */
+        .flipped {
+            transform: rotateY(180deg);
+        }
+        
+        /* Backside rotation */
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Dark Mode configuration for smooth transition */
+        .dark .bg-gray-900, .dark .text-white {
+             transition: background-color 300ms, color 300ms;
+        }
+        
+        /* Utility for disabling pointer events on disabled buttons in quiz */
+        .quiz-disabled {
+            pointer-events: none;
+        }
+
+        /* Timer Bar Animation */
+        #timerBar {
+            height: 8px;
+            width: 100%;
+            background-color: #fca5a5; /* Red-300 */
+            transform-origin: left;
+            animation: countdown var(--timer-duration) linear forwards;
+            border-radius: 4px;
+        }
+
+        @keyframes countdown {
+            from { width: 100%; background-color: #4f46e5; } /* Indigo */
+            to { width: 0%; background-color: #ef4444; } /* Red */
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="transition-colors duration-300">
+
+    <div id="app-container" class="min-h-screen font-sans">
+        <!-- Header -->
+        <header class="py-6 shadow-md bg-white dark:bg-gray-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400 tracking-tight">
+                    N5 Kanji Master
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 rounded-full transition duration-300 hover:bg-gray-200 dark:hover:bg-gray-700" aria-label="Toggle Dark Mode">
+                        <!-- SVG will be updated by JS -->
+                    </button>
+
+                    <!-- Mode Toggle Button -->
+                    <button id="modeToggle" class="px-4 py-2 text-sm font-semibold rounded-full transition duration-200 bg-indigo-500 hover:bg-indigo-600 text-white shadow-lg">
+                        Switch Mode
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+            
+            <!-- Progress Bar and Indicator -->
+            <div class="mb-8 flex justify-between items-center text-gray-700 dark:text-gray-300">
+                <p id="modeIndicator" class="text-lg font-bold">List View</p>
+                <p id="progressIndicator" class="text-xl font-mono">0 / 0</p>
+            </div>
+            
+            <!-- Dynamic Controls (Lesson Selector / Quiz Start / Quiz Next) -->
+            <div id="modeControls" class="flex justify-center space-x-4 mb-6">
+                <!-- Buttons visibility managed dynamically by JS -->
+                <button id="lessonSelectorButton" class="py-2 px-4 text-sm font-semibold rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white shadow-md transition duration-150">
+                    Select Lesson
+                </button>
+                <button id="startQuizButton" class="py-2 px-4 text-sm font-semibold rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md transition duration-150" style="display: none;">
+                    Start Quiz
+                </button>
+                <button id="nextQuizButton" class="py-2 px-4 text-sm font-semibold rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-md transition duration-150" style="display: none;">
+                    Next Card
+                </button>
+            </div>
+
+            <!-- Main Content Area (Kanji Card or Quiz Form) -->
+            <div id="mainContent" class="flex flex-col items-center">
+                <!-- Content injected here by JavaScript -->
+            </div>
+
+            <!-- Navigation Buttons (Disabled in Active Quiz) -->
+            <div class="flex space-x-4 mt-10 w-full max-w-sm mx-auto">
+                <button id="prevButton" class="flex-1 flex items-center justify-center py-3 px-6 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-bold rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-150 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Previous
+                </button>
+                <button id="nextButton" class="flex-1 flex items-center justify-center py-3 px-6 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition duration-150 shadow-lg">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+            </div>
+
+            <p id="hintText" class="mt-6 text-sm italic text-gray-500 dark:text-gray-400 text-center"></p>
+
+        </main>
+    </div>
+
+    <!-- Lesson Selector Modal Overlay -->
+    <div id="lessonModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300" style="display: none;">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-lg">
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Select Quiz Lessons</h2>
+            <p id="modalHint" class="text-sm text-gray-600 dark:text-gray-400 mb-4">Select the lessons you wish to include in your quiz or the single lesson you wish to browse.</p>
+            <div id="lessonCheckboxes" class="grid grid-cols-2 gap-4 max-h-80 overflow-y-auto p-2">
+                <!-- Lesson checkboxes injected here -->
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="closeModalButton" class="py-2 px-4 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
+                <button id="confirmSelectionButton" class="py-2 px-4 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- N5 Kanji Data structured into Lessons ---
+        const KANJI_LESSONS = [
+            {
+                lesson: 1,
+                title: "Numbers 1-5",
+                kanji: [
+                    { kanji: '一', meaning: 'One', onyomi: 'イチ', kunyomi: 'ひと(つ)', example: '一月 (いちがつ): January' },
+                    { kanji: '二', meaning: 'Two', onyomi: 'ニ', kunyomi: 'ふた(つ)', example: '二日 (ふつか): Second day' },
+                    { kanji: '三', meaning: 'Three', onyomi: 'サン', kunyomi: 'みっ(つ)', example: '三階 (さんがい): Third floor' },
+                    { kanji: '四', meaning: 'Four', onyomi: 'シ', kunyomi: 'よ(つ)', example: '四時 (よじ): Four o\'clock' },
+                    { kanji: '五', meaning: 'Five', onyomi: 'ゴ', kunyomi: 'いつ(つ)', example: '五人 (ごにん): Five people' },
+                ]
+            },
+            {
+                lesson: 2,
+                title: "Numbers 6-10 & Units",
+                kanji: [
+                    { kanji: '六', meaning: 'Six', onyomi: 'ロク', kunyomi: 'むっ(つ)', example: '六歳 (ろくさい): Six years old' },
+                    { kanji: '七', meaning: 'Seven', onyomi: 'シチ', kunyomi: 'なな(つ)', example: '七月 (しちがつ): July' },
+                    { kanji: '八', meaning: 'Eight', onyomi: 'ハチ', kunyomi: 'やっ(つ)', example: '八百 (はっぴゃく): Eight hundred' },
+                    { kanji: '九', meaning: 'Nine', onyomi: 'キュウ, ク', kunyomi: 'ここの(つ)', example: '九時 (くじ): Nine o\'clock' },
+                    { kanji: '十', meaning: 'Ten', onyomi: 'ジュウ', kunyomi: 'とお', example: '十日 (とおか): Ten days' },
+                ]
+            },
+            {
+                lesson: 3,
+                title: "Large Numbers & Currency",
+                kanji: [
+                    { kanji: '百', meaning: 'Hundred', onyomi: 'ヒャク', kunyomi: 'もも', example: '三百 (さんびゃく): Three hundred' },
+                    { kanji: '千', meaning: 'Thousand', onyomi: 'セン', kunyomi: 'ち', example: '一千 (いっせん): One thousand' },
+                    { kanji: '万', meaning: 'Ten Thousand', onyomi: 'マン', kunyomi: 'よろず', example: '一万円 (いちまんえん): Ten thousand yen' },
+                    { kanji: '円', meaning: 'Yen, Circle', onyomi: 'エン', kunyomi: 'まる(い)', example: '百円 (ひゃくえん): One hundred yen' },
+                    { kanji: '時', meaning: 'Time, Hour', onyomi: 'ジ', kunyomi: 'とき', example: '時間 (じかん): Time' },
+                ]
+            },
+            {
+                lesson: 4,
+                title: "Days and Months",
+                kanji: [
+                    { kanji: '日', meaning: 'Day, Sun', onyomi: 'ニチ, ジツ', kunyomi: 'ひ, か', example: '毎日 (まいにち): Every day' },
+                    { kanji: '月', meaning: 'Month, Moon', onyomi: 'ゲツ, ガツ', kunyomi: 'つき', example: '今月 (こんげつ): This month' },
+                    { kanji: '火', meaning: 'Fire', onyomi: 'カ', kunyomi: 'ひ', example: '火曜日 (かようび): Tuesday' },
+                    { kanji: '水', meaning: 'Water', onyomi: 'スイ', kunyomi: 'みず', example: '水曜日 (すいようび): Wednesday' },
+                    { kanji: '木', meaning: 'Tree, Wood', onyomi: 'ボク, モク', kunyomi: 'き', example: '木曜日 (もくようび): Thursday' },
+                ]
+            },
+            {
+                lesson: 5,
+                title: "Elements & Directions",
+                kanji: [
+                    { kanji: '金', meaning: 'Gold, Money', onyomi: 'キン', kunyomi: 'かね', example: '金曜日 (きんようび): Friday' },
+                    { kanji: '土', meaning: 'Earth, Soil', onyomi: 'ド, ト', kunyomi: 'つち', example: '土曜日 (どようび): Saturday' },
+                    { kanji: '上', meaning: 'Up, Above', onyomi: 'ジョウ', kunyomi: 'うえ', example: '上がる (あがる): To rise' },
+                    { kanji: '下', meaning: 'Down, Below', onyomi: 'カ, ゲ', kunyomi: 'した', example: '地下 (ちか): Underground' },
+                    { kanji: '中', meaning: 'Middle, Inside', onyomi: 'チュウ', kunyomi: 'なか', example: '中国 (ちゅうごく): China' },
+                ]
+            },
+        ];
+        
+        // Flattened list of ALL kanji
+        const ALL_KANJI = KANJI_LESSONS.flatMap(lesson => lesson.kanji);
+
+        // --- State Management ---
+        let currentMode = 'list'; // Changed initial mode to 'list'
+        let currentKanjiIndex = 0; // Index used for the current mode's list
+        let isCardFlipped = false;
+        let isDarkMode = true;
+        let quizFeedback = null;
+        let currentQuizOptions = []; 
+
+        // Flashcard/List state:
+        let currentFlashcardLesson = 1; // Start at Lesson 1
+        // Initialize list based on first lesson
+        let flashcardKanjiList = KANJI_LESSONS.find(l => l.lesson === 1).kanji; 
+        
+        // Quiz-specific state
+        let selectedLessons = [1, 2, 3, 4, 5]; // Default to all lessons
+        let quizKanjiList = ALL_KANJI; // The actively tested subset of kanji
+        let isQuizActive = false; // Is the user actively taking the quiz?
+        let timerId = null; // Stores the setTimeout ID for the quiz timer
+        const QUIZ_TIME_SECONDS = 15;
+
+        // --- DOM Elements ---
+        const appContainer = document.getElementById('app-container');
+        const modeToggle = document.getElementById('modeToggle');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const mainContent = document.getElementById('mainContent');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const modeIndicator = document.getElementById('modeIndicator');
+        const hintText = document.getElementById('hintText');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        
+        // Dynamic controls
+        const modeControls = document.getElementById('modeControls');
+        const lessonSelectorButton = document.getElementById('lessonSelectorButton');
+        const startQuizButton = document.getElementById('startQuizButton');
+        const nextQuizButton = document.getElementById('nextQuizButton');
+        
+        // Modal elements
+        const lessonModal = document.getElementById('lessonModal');
+        const confirmSelectionButton = document.getElementById('confirmSelectionButton');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalHint = document.getElementById('modalHint');
+
+
+        // --- Utility Functions ---
+
+        // Simple shuffle function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        /**
+         * Compiles the list of kanji for the quiz based on selectedLessons.
+         */
+        function compileQuizList() {
+            const filteredKanji = KANJI_LESSONS
+                .filter(lesson => selectedLessons.includes(lesson.lesson))
+                .flatMap(lesson => lesson.kanji);
+            
+            quizKanjiList = shuffleArray(filteredKanji);
+            currentKanjiIndex = 0;
+        }
+
+        /**
+         * Compiles the list of kanji for the flashcard/list mode based on currentFlashcardLesson.
+         */
+        function compileFlashcardList() {
+            const lessonData = KANJI_LESSONS.find(l => l.lesson === currentFlashcardLesson);
+            flashcardKanjiList = lessonData ? lessonData.kanji : [];
+            currentKanjiIndex = 0; // Always reset index when changing lesson
+        }
+
+        /**
+         * Generates four shuffled multiple-choice options for the quiz.
+         */
+        function generateQuizOptions(currentKanji) {
+            const allKanji = ALL_KANJI; 
+            const correctReading = (currentKanji.onyomi || currentKanji.kunyomi).split(',')[0].trim().toLowerCase();
+            const allReadings = allKanji.map(k => (k.onyomi || k.kunyomi).split(',')[0].trim().toLowerCase());
+
+            // Create a pool of potential wrong answers, excluding the correct one
+            const wrongReadingsPool = allReadings.filter(r => r !== correctReading);
+
+            // Select 3 unique wrong answers
+            const distractors = [];
+            while (distractors.length < 3 && wrongReadingsPool.length > 0) {
+                const randomIndex = Math.floor(Math.random() * wrongReadingsPool.length);
+                const distractor = wrongReadingsPool.splice(randomIndex, 1)[0]; 
+                distractors.push(distractor);
+            }
+
+            let options = [
+                { text: correctReading.toUpperCase(), isCorrect: true }
+            ];
+            distractors.forEach(d => options.push({ text: d.toUpperCase(), isCorrect: false }));
+
+            // Shuffle the options array
+            shuffleArray(options);
+
+            return options;
+        }
+
+        // --- Timer Management ---
+
+        function startTimer() {
+            clearTimeout(timerId); 
+
+            const timerBar = document.getElementById('timerBar');
+            if (timerBar) {
+                timerBar.style.animation = 'none';
+                void timerBar.offsetWidth; 
+                timerBar.style.animation = `countdown var(--timer-duration) linear forwards`;
+            }
+
+            timerId = setTimeout(() => {
+                handleTimerTimeout();
+            }, QUIZ_TIME_SECONDS * 1000);
+        }
+
+        function stopTimer() {
+            clearTimeout(timerId);
+            const timerBar = document.getElementById('timerBar');
+            if (timerBar) {
+                const computedStyle = window.getComputedStyle(timerBar);
+                const currentWidth = computedStyle.width;
+                timerBar.style.animation = 'none';
+                timerBar.style.width = currentWidth;
+            }
+        }
+
+        function handleTimerTimeout() {
+            stopTimer(); 
+            
+            if (isQuizActive) {
+                const currentKanji = quizKanjiList[currentKanjiIndex];
+                const correctReading = (currentKanji.onyomi || currentKanji.kunyomi).split(',')[0].trim().toLowerCase();
+                
+                quizFeedback = {
+                    isCorrect: false,
+                    message: `⏰ Time's up! The correct answer is shown below.`,
+                    correctAnswer: correctReading,
+                    submittedAnswer: '' 
+                };
+                renderApp();
+            }
+        }
+
+        // --- Render Functions ---
+
+        function renderApp() {
+            // Determine the correct list based on the current mode
+            const currentList = currentMode === 'flashcard' ? flashcardKanjiList : (currentMode === 'list' ? flashcardKanjiList : quizKanjiList);
+            const currentKanji = currentList[currentKanjiIndex] || {};
+            const totalKanji = currentList.length;
+
+            // 1. Dark Mode setup
+            appContainer.className = isDarkMode
+                ? 'dark bg-gray-900 text-white min-h-screen font-sans transition-colors duration-300'
+                : 'bg-gray-50 text-gray-900 min-h-screen font-sans transition-colors duration-300';
+            document.body.classList.toggle('dark', isDarkMode);
+
+            // 2. Header and Progress
+            let modeText = '';
+            let progressText = '';
+
+            if (currentMode === 'list') {
+                modeText = 'List View';
+                progressText = `Lesson ${currentFlashcardLesson} / ${KANJI_LESSONS.length}`;
+            } else if (currentMode === 'flashcard') {
+                modeText = `Flashcard View (Lesson ${currentFlashcardLesson})`;
+                progressText = `${currentKanjiIndex + 1} / ${totalKanji}`;
+            } else { // quiz
+                modeText = 'Quiz Time';
+                progressText = totalKanji > 0 ? `${currentKanjiIndex + 1} / ${totalKanji}` : '0 / 0';
+            }
+            
+            modeIndicator.textContent = modeText;
+            modeToggle.textContent = `Switch to ${currentMode === 'list' ? 'Flashcard Mode' : (currentMode === 'flashcard' ? 'Quiz Mode' : 'List Mode')}`;
+            progressIndicator.textContent = progressText;
+
+
+            // 3. Handle Content Rendering
+            if (totalKanji === 0 && (currentMode === 'flashcard' || currentMode === 'list')) {
+                mainContent.innerHTML = `<div class="p-8 text-center text-xl text-red-500 dark:text-red-400">
+                    Please select a lesson to begin browsing/listing.
+                </div>`;
+            } else if (totalKanji === 0 && currentMode === 'quiz') {
+                mainContent.innerHTML = `<div class="p-8 text-center text-xl text-red-500 dark:text-red-400">
+                    Please select at least one lesson to start the quiz.
+                </div>`;
+            } else {
+                mainContent.innerHTML = ''; 
+                if (currentMode === 'list') {
+                    renderListView(currentList);
+                } else if (currentMode === 'flashcard') {
+                    renderFlashcard(currentKanji);
+                } else {
+                    renderQuizMode(currentKanji);
+                }
+            }
+            
+            // 4. Update Dynamic Controls visibility
+            const isBrowserMode = currentMode === 'list' || currentMode === 'flashcard';
+
+            lessonSelectorButton.style.display = !isQuizActive ? 'block' : 'none';
+            startQuizButton.style.display = currentMode === 'quiz' && !isQuizActive ? 'block' : 'none';
+            nextQuizButton.style.display = currentMode === 'quiz' && isQuizActive && quizFeedback ? 'block' : 'none';
+            
+            // Update Lesson Selector Button appearance and text
+            if (isBrowserMode) {
+                lessonSelectorButton.textContent = `Change Lesson (Current: ${currentFlashcardLesson})`;
+                lessonSelectorButton.classList.remove('bg-yellow-500');
+                lessonSelectorButton.classList.add('bg-indigo-500');
+            } else if (currentMode === 'quiz') {
+                 lessonSelectorButton.textContent = `Select Lessons`;
+                 lessonSelectorButton.classList.remove('bg-indigo-500');
+                 lessonSelectorButton.classList.add('bg-yellow-500');
+            }
+            
+
+            // 5. Update Navigation button state and hint text
+            const navDisabled = currentMode === 'quiz' && isQuizActive;
+            prevButton.disabled = navDisabled;
+            nextButton.disabled = navDisabled;
+            prevButton.classList.toggle('opacity-50', navDisabled);
+            nextButton.classList.toggle('opacity-50', navDisabled);
+            
+            if (currentMode === 'list') {
+                prevButton.textContent = 'Previous Lesson';
+                nextButton.textContent = 'Next Lesson';
+                hintText.textContent = 'Use the arrows to switch between lessons.';
+            } else if (currentMode === 'flashcard') {
+                prevButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>Previous`;
+                nextButton.innerHTML = `Next<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`;
+                hintText.textContent = !isCardFlipped 
+                    ? 'Tap the card to reveal the readings and usage.' 
+                    : '';
+            } else {
+                 prevButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>Previous`;
+                nextButton.innerHTML = `Next<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`;
+                hintText.textContent = 'Complete the card or run out of time to advance.';
+            }
+            
+            // 6. Dark Mode SVG
+            darkModeToggle.innerHTML = isDarkMode ? `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            ` : `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            `;
+            
+            // 7. Start Timer if needed
+            if (currentMode === 'quiz' && isQuizActive && !quizFeedback) {
+                startTimer();
+            }
+        }
+
+        /**
+         * Renders the new List View UI.
+         */
+        function renderListView(kanjiList) {
+            const lessonData = KANJI_LESSONS.find(l => l.lesson === currentFlashcardLesson);
+            const lessonTitle = lessonData ? `Lesson ${lessonData.lesson}: ${lessonData.title}` : 'No Lesson Selected';
+
+            const kanjiRows = kanjiList.map((k, index) => `
+                <tr class="group border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700 transition duration-150">
+                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-lg font-bold text-indigo-600 dark:text-indigo-400">${k.kanji}</td>
+                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">${k.meaning}</td>
+                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap font-mono text-red-600 dark:text-red-400">${k.onyomi}</td>
+                    <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap font-mono text-blue-600 dark:text-blue-400">${k.kunyomi}</td>
+                    <td class="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">${k.example}</td>
+                </tr>
+            `).join('');
+
+            const listHtml = `
+                <div class="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-6">
+                    <h2 class="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mb-4 text-center">${lessonTitle}</h2>
+                    <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kanji</th>
+                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Meaning</th>
+                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">On-yomi</th>
+                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kun-yomi</th>
+                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Example</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                ${kanjiRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            mainContent.innerHTML = listHtml;
+        }
+
+
+        /**
+         * Renders the Flashcard UI.
+         */
+        function renderFlashcard(kanjiData) {
+            const lesson = KANJI_LESSONS.find(l => l.lesson === currentFlashcardLesson);
+            const lessonTitle = lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'General N5 Kanji';
+
+            const cardHtml = `
+                <div id="flashcard" class="perspective-1000 w-full max-w-sm h-96 mx-auto cursor-pointer" onclick="handleFlip()">
+                    <div id="cardInner" class="card-inner relative w-full h-full preserve-3d shadow-2xl rounded-2xl ${isCardFlipped ? 'flipped' : ''}">
+                        
+                        <!-- Front Side: Kanji and Meaning -->
+                        <div class="absolute w-full h-full flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-2xl backface-hidden">
+                            <p class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 mb-2">${lessonTitle}</p>
+                            <p class="text-7xl sm:text-9xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">${kanjiData.kanji}</p>
+                            <h2 class="text-2xl font-semibold tracking-wider text-gray-700 dark:text-gray-300">
+                                ${kanjiData.meaning}
+                            </h2>
+                            <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">Tap to see details</p>
+                        </div>
+
+                        <!-- Back Side: Readings and Example -->
+                        <div class="card-back absolute w-full h-full flex flex-col items-center justify-start p-6 bg-indigo-50 dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl backface-hidden">
+                            <h3 class="text-xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">${kanjiData.meaning}</h3>
+                            <div class="w-full space-y-3 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                                <p class="text-lg font-medium">
+                                    <span class="font-bold text-gray-500 dark:text-gray-400 mr-2">On-yomi:</span>
+                                    <span class="text-xl text-red-600 dark:text-red-400 font-mono">${kanjiData.onyomi}</span>
+                                </p>
+                                <p class="text-lg font-medium">
+                                    <span class="font-bold text-gray-500 dark:text-gray-400 mr-2">Kun-yomi:</span>
+                                    <span class="text-xl text-blue-600 dark:text-blue-400 font-mono">${kanjiData.kunyomi}</span>
+                                </p>
+                            </div>
+                            
+                            <div class="mt-6 p-4 bg-indigo-100 dark:bg-gray-900 rounded-lg w-full">
+                                <p class="text-sm font-semibold text-indigo-800 dark:text-indigo-200 mb-1">Usage Example (Memorization Key):</p>
+                                <p class="text-lg font-medium text-gray-800 dark:text-gray-100">${kanjiData.example}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            mainContent.innerHTML = cardHtml;
+        }
+
+        /**
+         * Renders the Quiz Mode UI with multiple choice buttons and timer.
+         */
+        function renderQuizMode(kanjiData) {
+            if (!isQuizActive) {
+                renderQuizSetup();
+                return;
+            }
+
+            if (!quizFeedback) {
+                currentQuizOptions = generateQuizOptions(kanjiData);
+            } else {
+                stopTimer();
+            }
+
+            const lesson = KANJI_LESSONS.find(l => l.kanji.some(k => k.kanji === kanjiData.kanji));
+            const lessonTitle = lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Lessons';
+
+
+            let feedbackHtml = '';
+            if (quizFeedback) {
+                const isCorrectClass = quizFeedback.isCorrect 
+                    ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' 
+                    : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
+                
+                const correctAnswerHtml = !quizFeedback.isCorrect 
+                    ? `<p class="mt-1 text-sm">Correct Reading: <span class="font-mono">${quizFeedback.correctAnswer.toUpperCase()}</span></p>` 
+                    : '';
+
+                feedbackHtml = `
+                    <div class="mt-6 p-4 rounded-lg text-center font-semibold ${isCorrectClass}">
+                        <p>${quizFeedback.message}</p>
+                        ${correctAnswerHtml}
+                    </div>
+                `;
+            }
+
+            const optionsHtml = currentQuizOptions.map(option => {
+                const reading = option.text;
+                const isCorrect = option.isCorrect;
+                
+                let buttonClass = "py-3 px-4 rounded-xl text-lg font-bold transition duration-150 shadow-md w-full text-center tracking-wide";
+                let isDisabled = quizFeedback !== null; 
+
+                if (quizFeedback) {
+                    if (reading === quizFeedback.correctAnswer.toUpperCase()) {
+                        buttonClass += " bg-green-600 text-white shadow-lg shadow-green-500/50";
+                    } else if (reading === quizFeedback.submittedAnswer.toUpperCase()) {
+                        buttonClass += " bg-red-600 text-white shadow-lg shadow-red-500/50";
+                    } else {
+                        buttonClass += " bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white opacity-50";
+                    }
+                    buttonClass += " quiz-disabled";
+                } else {
+                    buttonClass += " bg-indigo-50 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-indigo-100 dark:hover:bg-gray-600";
+                }
+
+                return `<button
+                    data-reading="${reading}"
+                    onclick="handleQuizSelection('${reading}', ${isCorrect})"
+                    class="${buttonClass}"
+                    ${isDisabled ? 'disabled' : ''}
+                >
+                    ${reading}
+                </button>`;
+            }).join('');
+
+            const quizHtml = `
+                <div class="max-w-md w-full p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative">
+                    <!-- Timer Bar -->
+                    <div id="timerContainer" class="absolute top-0 left-0 right-0 p-2">
+                        <div id="timerBar"></div>
+                    </div>
+                    
+                    <h3 class="text-xs mt-4 font-semibold text-gray-500 dark:text-gray-400 text-center">${lessonTitle}</h3>
+                    <h3 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Select the correct reading:</h3>
+                    
+                    <div class="text-center mb-6 p-4 bg-indigo-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-7xl sm:text-9xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-2">${kanjiData.kanji}</p>
+                        <p class="text-lg text-gray-700 dark:text-gray-300">Meaning: <span class="font-semibold">${kanjiData.meaning}</span></p>
+                    </div>
+
+                    <!-- Multiple Choice Options -->
+                    <div id="quizOptions" class="grid grid-cols-2 gap-4">
+                        ${optionsHtml}
+                    </div>
+                    
+                    ${feedbackHtml}
+                </div>
+            `;
+            mainContent.innerHTML = quizHtml;
+        }
+
+        /**
+         * Renders the initial quiz setup screen before the quiz starts.
+         */
+        function renderQuizSetup() {
+            const totalKanjiInSelection = KANJI_LESSONS.filter(l => selectedLessons.includes(l.lesson)).flatMap(l => l.kanji).length;
+            const selectedCount = selectedLessons.length;
+
+            const lessonListHtml = KANJI_LESSONS
+                .filter(lesson => selectedLessons.includes(lesson.lesson))
+                .map(lesson => 
+                `<span class="inline-block bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 text-sm font-medium px-3 py-1 rounded-full m-1">
+                    Lesson ${lesson.lesson} (${lesson.title})
+                </span>`
+            ).join('');
+
+            const setupHtml = `
+                <div class="max-w-md w-full p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg text-center">
+                    <h3 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">Welcome to Quiz Mode!</h3>
+                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                        Test your memory on the N5 Kanji set with a ${QUIZ_TIME_SECONDS}-second timer per card.
+                    </p>
+                    <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="font-bold mb-2 text-gray-800 dark:text-gray-200">Current Quiz Selection (${totalKanjiInSelection} Kanji):</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">${selectedCount === KANJI_LESSONS.length ? 'All Lessons' : 'Custom Selection'}</p>
+                        <div class="mt-2">${selectedCount > 0 ? lessonListHtml : 'No lessons selected.'}</div>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Use the **Select Lessons** button above to change the list.</p>
+                </div>
+            `;
+            mainContent.innerHTML = setupHtml;
+
+            startQuizButton.style.display = totalKanjiInSelection > 0 ? 'block' : 'none';
+        }
+
+        // --- Lesson Selection Modal ---
+
+        function renderLessonSelector() {
+            const container = document.getElementById('lessonCheckboxes');
+            
+            if (currentMode === 'flashcard' || currentMode === 'list') {
+                modalTitle.textContent = "Select Lesson for Browsing";
+                modalHint.textContent = "Choose a single lesson to view its list or flashcards.";
+            } else {
+                modalTitle.textContent = "Select Quiz Lessons";
+                modalHint.textContent = "Choose multiple lessons to include in your quiz.";
+            }
+
+            container.innerHTML = KANJI_LESSONS.map(lesson => {
+                let isChecked;
+                if (currentMode === 'flashcard' || currentMode === 'list') {
+                    // Only one lesson is "checked" for browsing/list
+                    isChecked = lesson.lesson === currentFlashcardLesson;
+                } else {
+                    // Multiple lessons can be checked for quiz
+                    isChecked = selectedLessons.includes(lesson.lesson);
+                }
+
+                return `
+                    <label class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <input type="checkbox" 
+                               data-lesson="${lesson.lesson}" 
+                               class="h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                               ${isChecked ? 'checked' : ''}>
+                        <span class="text-gray-900 dark:text-white font-medium">
+                            Lesson ${lesson.lesson}: ${lesson.title}
+                        </span>
+                    </label>
+                `;
+            }).join('');
+            
+            lessonModal.style.display = 'flex';
+        }
+
+        function handleConfirmSelection() {
+            const checkboxes = document.querySelectorAll('#lessonCheckboxes input[type="checkbox"]');
+            
+            const newlySelectedLessons = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => parseInt(cb.dataset.lesson));
+            
+            if (newlySelectedLessons.length === 0) {
+                 alert('You must select at least one lesson.');
+                 return;
+            }
+
+            if (currentMode === 'flashcard' || currentMode === 'list') {
+                // For flashcard/list, we enforce single selection by taking the first one
+                currentFlashcardLesson = newlySelectedLessons[0];
+                compileFlashcardList();
+                isCardFlipped = false;
+                currentKanjiIndex = 0;
+            } else {
+                // For quiz, update the list and go back to setup screen
+                selectedLessons = newlySelectedLessons;
+                isQuizActive = false;
+            }
+
+            lessonModal.style.display = 'none';
+            renderApp();
+        }
+
+
+        // --- Event Handlers ---
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            renderApp();
+        }
+
+        function toggleMode() {
+            if (currentMode === 'quiz') {
+                stopTimer();
+                currentMode = 'list'; // Quiz -> List
+                isQuizActive = false;
+            } else if (currentMode === 'list') {
+                currentMode = 'flashcard'; // List -> Flashcard
+            } else { // currentMode === 'flashcard'
+                currentMode = 'quiz'; // Flashcard -> Quiz
+            }
+            
+            isCardFlipped = false;
+            quizFeedback = null;
+            // When switching views, reset index to 0, pointing to the start of the relevant list/lesson
+            currentKanjiIndex = 0; 
+            
+            renderApp();
+        }
+
+        function handleFlip() {
+            if (currentMode === 'flashcard') {
+                isCardFlipped = !isCardFlipped;
+                renderApp();
+            }
+        }
+        
+        function handleQuizStart() {
+            compileQuizList(); 
+            if (quizKanjiList.length === 0) {
+                 alert('No kanji selected for the quiz. Please select lessons.');
+                 return;
+            }
+            isQuizActive = true;
+            quizFeedback = null;
+            currentKanjiIndex = 0;
+            renderApp();
+        }
+
+        function handleNext() {
+            const list = currentMode === 'flashcard' ? flashcardKanjiList : quizKanjiList;
+            
+            isCardFlipped = false;
+            quizFeedback = null; 
+            stopTimer(); 
+
+            if (currentMode === 'list') {
+                // In List mode, cycle lessons
+                const nextLesson = currentFlashcardLesson < KANJI_LESSONS.length ? currentFlashcardLesson + 1 : 1;
+                currentFlashcardLesson = nextLesson;
+                compileFlashcardList();
+            } else if (currentMode === 'flashcard') {
+                // In Flashcard mode, cycle kanji within the lesson
+                if (currentKanjiIndex < list.length - 1) {
+                    currentKanjiIndex++;
+                } else {
+                    currentKanjiIndex = 0; // Loop back to the start of the selected lesson
+                }
+            } else { // Quiz mode
+                 // Navigation in Quiz mode is controlled by handleQuizSelection or nextQuizButton
+                 if (currentKanjiIndex < list.length - 1) {
+                    currentKanjiIndex++;
+                 } else {
+                    alert(`Quiz finished! You completed ${list.length} kanji.`);
+                    isQuizActive = false;
+                    currentKanjiIndex = 0;
+                 }
+            }
+
+            renderApp();
+        }
+
+        function handlePrev() {
+            const list = currentMode === 'flashcard' ? flashcardKanjiList : quizKanjiList;
+
+            isCardFlipped = false;
+            quizFeedback = null;
+            stopTimer(); 
+
+            if (currentMode === 'list') {
+                // In List mode, cycle lessons
+                const prevLesson = currentFlashcardLesson > 1 ? currentFlashcardLesson - 1 : KANJI_LESSONS.length;
+                currentFlashcardLesson = prevLesson;
+                compileFlashcardList();
+            } else if (currentMode === 'flashcard') {
+                // In Flashcard mode, cycle kanji within the lesson
+                currentKanjiIndex = (currentKanjiIndex - 1 + list.length) % list.length;
+            } else {
+                // Quiz mode: Previous button is not typically used during active quiz, 
+                // but we allow it for manual review if quiz is over or disabled in active quiz.
+                currentKanjiIndex = (currentKanjiIndex - 1 + list.length) % list.length;
+            }
+
+            renderApp();
+        }
+
+        function handleQuizSelection(submittedReading, isAnswerCorrect) {
+            if (quizFeedback) return; 
+
+            stopTimer(); 
+
+            const currentKanji = quizKanjiList[currentKanjiIndex];
+            const correctReading = (currentKanji.onyomi || currentKanji.kunyomi).split(',')[0].trim().toLowerCase();
+
+            if (isAnswerCorrect) {
+                quizFeedback = {
+                    isCorrect: true,
+                    message: '✅ Correct! Moving on...',
+                    correctAnswer: correctReading,
+                    submittedAnswer: submittedReading
+                };
+                renderApp();
+                setTimeout(handleNext, 1500);
+            } else {
+                quizFeedback = {
+                    isCorrect: false,
+                    message: '❌ Incorrect. Study the correct reading!',
+                    correctAnswer: correctReading,
+                    submittedAnswer: submittedReading
+                };
+                renderApp();
+            }
+        }
+
+
+        // --- Initialization ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // Initialize Flashcard list based on default lesson 1
+            compileFlashcardList();
+
+            // Attach static event listeners
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+            modeToggle.addEventListener('click', toggleMode);
+            
+            // Lesson selector modal events
+            lessonSelectorButton.addEventListener('click', renderLessonSelector);
+            closeModalButton.addEventListener('click', () => lessonModal.style.display = 'none');
+            confirmSelectionButton.addEventListener('click', handleConfirmSelection);
+
+            // Quiz control events
+            startQuizButton.addEventListener('click', handleQuizStart);
+            nextQuizButton.addEventListener('click', handleNext); 
+
+            // Main navigation
+            document.getElementById('nextButton').addEventListener('click', handleNext);
+            document.getElementById('prevButton').addEventListener('click', handlePrev);
+            
+            // Initial Render
+            renderApp();
+        });
+    </script>
+</body>
+</html>
