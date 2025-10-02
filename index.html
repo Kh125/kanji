@@ -91,7 +91,7 @@
             <!-- Progress Bar and Indicator -->
             <div class="mb-8 flex justify-between items-center text-gray-700 dark:text-gray-300">
                 <p id="modeIndicator" class="text-lg font-bold">Welcome</p>
-                <p id="progressIndicator" class="text-xl font-mono">N5 (103)</p>
+                <p id="progressIndicator" class="text-xl font-mono">N5 (104)</p>
             </div>
             
             <!-- Dynamic Controls (Start Study/Settings/Back button) -->
@@ -153,134 +153,857 @@
     </div>
 
     <script>
-        // --- N5 Kanji Data structured into Lessons (103 Kanji Total) ---
+        // --- N5 Kanji Data structured into Lessons (104 Kanji Total) ---
         const KANJI_LESSONS = [
             {
-                lesson: 1,
-                title: "Numbers & Basic Concepts",
-                kanji: [
-                    { kanji: '一', meaning: 'One', onyomi: 'イチ', kunyomi: 'ひと(つ)', usage: ['一つ (ひと(つ))', '一番 (いちばん)'] },
-                    { kanji: '二', meaning: 'Two', onyomi: 'ニ', kunyomi: 'ふた(つ)', usage: ['二つ (ふた(つ))', '二階 (にかい)'] },
-                    { kanji: '三', meaning: 'Three', onyomi: 'サン', kunyomi: 'み(つ)', usage: ['三日 (み(っか))'] },
-                    { kanji: '四', meaning: 'Four', onyomi: 'シ', kunyomi: 'よ(ん)', usage: ['四時 (よ(じ))', '四つ (よっつ)'] },
-                    { kanji: '五', meaning: 'Five', onyomi: 'ゴ', kunyomi: 'いつ(つ)', usage: ['五人 (ご(にん))'] },
-                    { kanji: '六', meaning: 'Six', onyomi: 'ロク', kunyomi: 'むっ(つ)', usage: ['六つ (む(っつ))'] },
-                    { kanji: '七', meaning: 'Seven', onyomi: 'シチ', kunyomi: 'なな(つ)', usage: ['七つ (なな(つ))', '七月 (しちがつ)'] },
-                    { kanji: '八', meaning: 'Eight', onyomi: 'ハチ', kunyomi: 'や(つ)', usage: ['八百 (は(っぴゃく))'] },
-                    { kanji: '九', meaning: 'Nine', onyomi: 'キュウ, ク', kunyomi: 'ここの(つ)', usage: ['九時 (く(じ))', '九月 (くがつ)'] },
-                    { kanji: '十', meaning: 'Ten', onyomi: 'ジュウ', kunyomi: 'とお', usage: ['十日 (とお(か))', '十字路 (じゅうじろ)'] },
-                    { kanji: '百', meaning: 'Hundred', onyomi: 'ヒャク', kunyomi: 'もも', usage: ['三百 (サンビャク)'] },
-                    { kanji: '千', meaning: 'Thousand', onyomi: 'セン', kunyomi: 'ち', usage: ['三千 (サンゼン)'] },
+                "lesson": 1,
+                "title": "Natural Elements and Days of the Week (Kanji 1-10)",
+                "kanji": [
+                    {
+                        "kanji": "山",
+                        "meaning": "Mountain",
+                        "onyomi": "サン",
+                        "kunyomi": "やま",
+                        "usage": [
+                            "やま (やま)",
+                            "富士山 (ふじさん)",
+                            "登山 (とざん)"
+                        ]
+                    },
+                    {
+                        "kanji": "川",
+                        "meaning": "River",
+                        "onyomi": "セン",
+                        "kunyomi": "かわ",
+                        "usage": [
+                            "かわ (かわ)",
+                            "山川さん (やまかわさん)",
+                            "インダス川 (いんだすがわ)"
+                        ]
+                    },
+                    {
+                        "kanji": "田",
+                        "meaning": "Rice Field",
+                        "onyomi": "デン",
+                        "kunyomi": "た",
+                        "usage": [
+                            "た (た)",
+                            "水田 (すいでん)",
+                            "山田さん (やまださん)",
+                            "油田 (ゆでん)"
+                        ]
+                    },
+                    {
+                        "kanji": "日",
+                        "meaning": "Sun, Day",
+                        "onyomi": "ニチ, ジツ",
+                        "kunyomi": "ひ, び",
+                        "usage": [
+                            "ひ (ひ)",
+                            "日本 (にほん)",
+                            "休日 (きゅうじつ)"
+                        ]
+                    },
+                    {
+                        "kanji": "月",
+                        "meaning": "Moon, Month",
+                        "onyomi": "ゲツ, ガツ",
+                        "kunyomi": "つき",
+                        "usage": [
+                            "つき (つき)",
+                            "月曜日 (げつようび)",
+                            "今月 (こんげつ)"
+                        ]
+                    },
+                    {
+                        "kanji": "火",
+                        "meaning": "Fire",
+                        "onyomi": "カ",
+                        "kunyomi": "ひ",
+                        "usage": [
+                            "ひ (ひ)",
+                            "火曜日 (かようび)",
+                            "火山 (かざん)"
+                        ]
+                    },
+                    {
+                        "kanji": "水",
+                        "meaning": "Water",
+                        "onyomi": "スイ",
+                        "kunyomi": "みず",
+                        "usage": [
+                            "みず (みず)",
+                            "水曜日 (すいようび)",
+                            "水道 (すいどう)",
+                            "水田 (すいでん)"
+                        ]
+                    },
+                    {
+                        "kanji": "木",
+                        "meaning": "Tree, Wood",
+                        "onyomi": "ボク, モク",
+                        "kunyomi": "き",
+                        "usage": [
+                            "き (き)",
+                            "木曜日 (もくようび)"
+                        ]
+                    },
+                    {
+                        "kanji": "金",
+                        "meaning": "Gold, Money, Metal",
+                        "onyomi": "キン, コン",
+                        "kunyomi": "かね",
+                        "usage": [
+                            "おかね (おかね)",
+                            "金曜日 (きんようび)"
+                        ]
+                    },
+                    {
+                        "kanji": "土",
+                        "meaning": "Soil, Earth, Ground",
+                        "onyomi": "ド, ト",
+                        "kunyomi": "つち",
+                        "usage": [
+                            "つち (つち)",
+                            "土曜日 (どようび)",
+                            "土地 (とち)"
+                        ]
+                    }
                 ]
             },
             {
-                lesson: 2,
-                title: "Large Numbers, Time & Money",
-                kanji: [
-                    { kanji: '万', meaning: 'Ten Thousand', onyomi: 'マン', kunyomi: 'よろず', usage: ['一万円 (いち(まんえん))'] },
-                    { kanji: '円', meaning: 'Yen, Circle', onyomi: 'エン', kunyomi: 'まる(い)', usage: ['百円 (ひゃく(えん))'] },
-                    { kanji: '時', meaning: 'Time, Hour', onyomi: 'ジ', kunyomi: 'とき', usage: ['時間 (じ(かん))', '時計 (とけい)'] },
-                    { kanji: '年', meaning: 'Year', onyomi: 'ネン', kunyomi: 'とし', usage: ['去年 (きょ(ねん))', '今年 (ことし)'] },
-                    { kanji: '分', meaning: 'Minute, Part', onyomi: 'ブン, フン', kunyomi: 'わ(ける)', usage: ['五分 (ご(ふん))', '分かる (わ(かる))'] },
-                    { kanji: '前', meaning: 'Before, Front', onyomi: 'ゼン', kunyomi: 'まえ', usage: ['午前 (ご(ぜん))', '前 (まえ)'] },
-                    { kanji: '後', meaning: 'After, Back', onyomi: 'ゴ, コウ', kunyomi: 'うし(ろ)', usage: ['午後 (ご(ご))', '後で (あとで)'] },
-                    { kanji: '今', meaning: 'Now', onyomi: 'コン', kunyomi: 'いま', usage: ['今日 (きょ(う))', '今週 (こんしゅう)'] },
-                    { kanji: '半', meaning: 'Half', onyomi: 'ハン', kunyomi: 'なか(ば)', usage: ['三時半 (さん(じはん))'] },
-                    { kanji: '毎', meaning: 'Every', onyomi: 'マイ', kunyomi: 'ごと', usage: ['毎日 (まい(にち))', '毎朝 (まいあさ)'] },
-                    { kanji: '何', meaning: 'What, How', onyomi: 'カ', kunyomi: 'なに, なん', usage: ['何時 (なん(じ))', '何 (なに)'] },
-                    { kanji: '午', meaning: 'Noon', onyomi: 'ゴ', kunyomi: 'うま', usage: ['午前 (ご(ぜん))'] },
+                "lesson": 2,
+                "title": "Numbers (Kanji 11-20)",
+                "kanji": [
+                    {
+                        "kanji": "一",
+                        "meaning": "One",
+                        "onyomi": "イチ, イツ",
+                        "kunyomi": "ひと-つ",
+                        "usage": [
+                            "ひとつ (ひとつ)",
+                            "一月 (いちがつ)",
+                            "一日 (いちにち)"
+                        ]
+                    },
+                    {
+                        "kanji": "二",
+                        "meaning": "Two",
+                        "onyomi": "ニ",
+                        "kunyomi": "ふた-つ",
+                        "usage": [
+                            "ふたつ (ふたつ)",
+                            "二月 (にがつ)",
+                            "二日 (ふつか)",
+                            "二人 (ふたり)"
+                        ]
+                    },
+                    {
+                        "kanji": "三",
+                        "meaning": "Three",
+                        "onyomi": "サン",
+                        "kunyomi": "みっ-つ",
+                        "usage": [
+                            "みっつ (みっつ)",
+                            "三月 (さんがつ)",
+                            "三日 (みっか)"
+                        ]
+                    },
+                    {
+                        "kanji": "四",
+                        "meaning": "Four",
+                        "onyomi": "シ",
+                        "kunyomi": "よっ-つ, よん",
+                        "usage": [
+                            "よっつ (よっつ)",
+                            "四月 (しがつ)",
+                            "四日 (よっか)"
+                        ]
+                    },
+                    {
+                        "kanji": "五",
+                        "meaning": "Five",
+                        "onyomi": "ゴ",
+                        "kunyomi": "いつ-つ",
+                        "usage": [
+                            "いつつ (いつつ)",
+                            "五月 (ごがつ)",
+                            "五日 (いつか)",
+                            "五円 (ごえん)"
+                        ]
+                    },
+                    {
+                        "kanji": "六",
+                        "meaning": "Six",
+                        "onyomi": "ロク, リク",
+                        "kunyomi": "むっ-つ",
+                        "usage": [
+                            "むっつ (むっつ)",
+                            "六月 (ろくがつ)",
+                            "六日 (むいか)",
+                            "六本木 (ろっぽんぎ)"
+                        ]
+                    },
+                    {
+                        "kanji": "七",
+                        "meaning": "Seven",
+                        "onyomi": "シチ",
+                        "kunyomi": "なな-つ",
+                        "usage": [
+                            "ななつ (ななつ)",
+                            "七月 (しちがつ)",
+                            "七日 (なのか)"
+                        ]
+                    },
+                    {
+                        "kanji": "八",
+                        "meaning": "Eight",
+                        "onyomi": "ハチ",
+                        "kunyomi": "やっ-つ",
+                        "usage": [
+                            "やっつ (やっつ)",
+                            "八月 (はちがつ)",
+                            "八日 (ようか)",
+                            "八百屋 (やおや)"
+                        ]
+                    },
+                    {
+                        "kanji": "九",
+                        "meaning": "Nine",
+                        "onyomi": "キュウ, ク",
+                        "kunyomi": "ここの-つ",
+                        "usage": [
+                            "ここのつ (ここのつ)",
+                            "九月 (くがつ)",
+                            "九日 (ここのか)",
+                            "九州 (きゅうしゅう)"
+                        ]
+                    },
+                    {
+                        "kanji": "十",
+                        "meaning": "Ten",
+                        "onyomi": "ジュウ, ジッ, ジュッ",
+                        "kunyomi": "とお",
+                        "usage": [
+                            "とお (とお)",
+                            "十月 (じゅうがつ)",
+                            "十日 (とおか)"
+                        ]
+                    }
                 ]
             },
             {
-                lesson: 3,
-                title: "Days of the Week",
-                kanji: [
-                    { kanji: '日', meaning: 'Day, Sun', onyomi: 'ニチ, ジツ', kunyomi: 'ひ, か', usage: ['日曜日 (にち(ようび))', '日本 (にほん)'] },
-                    { kanji: '月', meaning: 'Month, Moon', onyomi: 'ゲツ, ガツ', kunyomi: 'つき', usage: ['月曜日 (げつ(ようび))', '今月 (こんげつ)'] },
-                    { kanji: '火', meaning: 'Fire', onyomi: 'カ', kunyomi: 'ひ', usage: ['火曜日 (か(ようび))'] },
-                    { kanji: '水', meaning: 'Water', onyomi: 'スイ', kunyomi: 'みず', usage: ['水曜日 (すい(ようび))', '水道 (すいどう)'] },
-                    { kanji: '木', meaning: 'Tree, Wood', onyomi: 'ボク, モク', kunyomi: 'き', usage: ['木曜日 (もく(ようび))'] },
-                    { kanji: '金', meaning: 'Gold, Money', onyomi: 'キン', kunyomi: 'かね', usage: ['金曜日 (きん(ようび))', 'お金 (おかね)'] },
-                    { kanji: '土', meaning: 'Earth, Soil', onyomi: 'ド, ト', kunyomi: 'つち', usage: ['土曜日 (ど(ようび))', '土地 (とち)'] },
-                    { kanji: '曜', meaning: 'Weekday', onyomi: 'ヨウ', kunyomi: '', usage: ['日曜日 (にち(ようび))'] },
-                    { kanji: '週', meaning: 'Week', onyomi: 'シュウ', kunyomi: '', usage: ['今週 (こん(しゅう))'] },
-                    { kanji: '先', meaning: 'Previous, Ahead', onyomi: 'セン', kunyomi: 'さき', usage: ['先週 (せん(しゅう))', '先生 (せんせい)'] },
-                    { kanji: '来', meaning: 'Come, Next', onyomi: 'ライ', kunyomi: 'く(る)', usage: ['来週 (らい(しゅう))', '来る (く(る))'] },
+                "lesson": 3,
+                "title": "Large Numbers, Position, and Division (Kanji 21-30)",
+                "kanji": [
+                    {
+                        "kanji": "百",
+                        "meaning": "Hundred",
+                        "onyomi": "ヒャク, ビャク, ピャク",
+                        "kunyomi": "なし",
+                        "usage": [
+                            "百 (ひゃく)",
+                            "三百 (さんびゃく)",
+                            "百科事典 (ひゃっかじてん)"
+                        ]
+                    },
+                    {
+                        "kanji": "千",
+                        "meaning": "Thousand",
+                        "onyomi": "セン, ゼン",
+                        "kunyomi": "ち",
+                        "usage": [
+                            "千 (せん)",
+                            "二千 (にせん)",
+                            "千葉県 (ちばけん)"
+                        ]
+                    },
+                    {
+                        "kanji": "万",
+                        "meaning": "Ten thousand",
+                        "onyomi": "マン, バン",
+                        "kunyomi": "なし",
+                        "usage": [
+                            "一万 (いちまん)",
+                            "万国 (ばんこく)",
+                            "万年筆 (まんねんひつ)"
+                        ]
+                    },
+                    {
+                        "kanji": "円",
+                        "meaning": "Yen, Circle, Round",
+                        "onyomi": "エン",
+                        "kunyomi": "まる-い",
+                        "usage": [
+                            "円 (えん)",
+                            "四万円 (よんまんえん)",
+                            "円高 (えんだか)"
+                        ]
+                    },
+                    {
+                        "kanji": "年",
+                        "meaning": "Year, Age",
+                        "onyomi": "ネン",
+                        "kunyomi": "とし",
+                        "usage": [
+                            "とし (とし)",
+                            "来年 (らいねん)",
+                            "年金 (ねんきん)",
+                            "二〇〇〇年 (にせんねん)"
+                        ]
+                    },
+                    {
+                        "kanji": "上",
+                        "meaning": "Above, Up, On",
+                        "onyomi": "ジョウ",
+                        "kunyomi": "うえ, あ-がる",
+                        "usage": [
+                            "うえ (うえ)",
+                            "上がる (あがる)",
+                            "上着 (うわぎ)"
+                        ]
+                    },
+                    {
+                        "kanji": "下",
+                        "meaning": "Under, Below, Down",
+                        "onyomi": "カ, ゲ",
+                        "kunyomi": "した, さ-がる",
+                        "usage": [
+                            "した (した)",
+                            "下がる (さがる)",
+                            "地下鉄 (ちかてつ)"
+                        ]
+                    },
+                    {
+                        "kanji": "中",
+                        "meaning": "Middle, Inside, Center",
+                        "onyomi": "チュウ, ジュウ",
+                        "kunyomi": "なか",
+                        "usage": [
+                            "なか (なか)",
+                            "一日中 (いちにちじゅう)",
+                            "中学校 (ちゅうがっこう)",
+                            "中心 (ちゅうしん)"
+                        ]
+                    },
+                    {
+                        "kanji": "半",
+                        "meaning": "Half",
+                        "onyomi": "ハン",
+                        "kunyomi": "なか-ば",
+                        "usage": [
+                            "半分 (はんぶん)",
+                            "一年半 (いちねんはん)",
+                            "四時半 (よじはん)",
+                            "半日 (はんにち)"
+                        ]
+                    },
+                    {
+                        "kanji": "分",
+                        "meaning": "Divide, Understand, Minute",
+                        "onyomi": "フン, ブン, プン",
+                        "kunyomi": "わ-ける, わ-かる",
+                        "usage": [
+                            "分ける (わける)",
+                            "分かる (わかる)",
+                            "十分 (じゅうぷん)",
+                            "十分 (じゅっぷん)"
+                        ]
+                    }
                 ]
             },
             {
-                lesson: 4,
-                title: "Location and Direction",
-                kanji: [
-                    { kanji: '上', meaning: 'Up, Above', onyomi: 'ジョウ', kunyomi: 'うえ, あ(がる)', usage: ['上着 (うわ(ぎ))', '上げる (あ(げる))'] },
-                    { kanji: '下', meaning: 'Down, Below', onyomi: 'カ, ゲ', kunyomi: 'きた, さ(がる)', usage: ['地下 (ち(か))', '下さい (くだ(さい))'] },
-                    { kanji: '中', meaning: 'Middle, Inside', onyomi: 'チュウ', kunyomi: 'なか', usage: ['中国 (ちゅう(ごく))', '中 (なか)'] },
-                    { kanji: '外', meaning: 'Outside', onyomi: 'ガイ', kunyomi: 'そと', usage: ['外国 (がい(こく))', '外 (そと)'] },
-                    { kanji: '右', meaning: 'Right', onyomi: 'ウ, ユウ', kunyomi: 'みぎ', usage: ['右側 (みぎ(がわ))'] },
-                    { kanji: '左', meaning: 'Left', onyomi: 'サ', kunyomi: 'ひだり', usage: ['左側 (ひだり(がわ))'] },
-                    { kanji: '北', meaning: 'North', onyomi: 'ホク', kunyomi: 'きた', usage: ['北口 (きた(ぐち))'] },
-                    { kanji: '南', meaning: 'South', onyomi: 'ナン', kunyomi: 'みなみ', usage: ['南口 (みなみ(ぐち))'] },
-                    { kanji: '東', meaning: 'East', onyomi: 'トウ', kunyomi: 'ひがし', usage: ['東口 (ひがし(ぐち))'] },
-                    { kanji: '西', meaning: 'West', onyomi: 'セイ, ザイ', kunyomi: 'にし', usage: ['西口 (にし(ぐち))'] },
-                    { kanji: '口', meaning: 'Mouth, Entrance', onyomi: 'コウ', kunyomi: 'くち', usage: ['入口 (いり(ぐち))', '出口 (でぐち)'] },
+                "lesson": 4,
+                "title": "People, Body Parts, and Power (Kanji 31-40)",
+                "kanji": [
+                    {
+                        "kanji": "人",
+                        "meaning": "Person",
+                        "onyomi": "ジン, ニン",
+                        "kunyomi": "ひと",
+                        "usage": [
+                            "ひと (person)",
+                            "日本人 (Japanese)",
+                            "三人 (three people)"
+                        ]
+                    },
+                    {
+                        "kanji": "子",
+                        "meaning": "Child",
+                        "onyomi": "シ, ス",
+                        "kunyomi": "こ, こ-ども",
+                        "usage": [
+                            "こども (child)",
+                            "女の子 (female)",
+                            "親子 (parent and child)",
+                            "調子 (condition)"
+                        ]
+                    },
+                    {
+                        "kanji": "女",
+                        "meaning": "Woman",
+                        "onyomi": "ジョ",
+                        "kunyomi": "おんな",
+                        "usage": [
+                            "おんなのひと (woman)",
+                            "女の子 (girl)",
+                            "女性 (woman)"
+                        ]
+                    },
+                    {
+                        "kanji": "男",
+                        "meaning": "Man",
+                        "onyomi": "ダン, ナン, ケン",
+                        "kunyomi": "おとこ",
+                        "usage": [
+                            "おとこ (man)",
+                            "男の子 (boy)",
+                            "男女 (man and woman)",
+                            "長男 (eldest son)",
+                            "だんせい (man)"
+                        ]
+                    },
+                    {
+                        "kanji": "目",
+                        "meaning": "Eye",
+                        "onyomi": "モク",
+                        "kunyomi": "め",
+                        "usage": [
+                            "め (eye)",
+                            "一日 (the first day)",
+                            "目薬 (eye lotion)",
+                            "目的 (purpose)"
+                        ]
+                    },
+                    {
+                        "kanji": "口",
+                        "meaning": "Mouth",
+                        "onyomi": "コウ, ク",
+                        "kunyomi": "くち",
+                        "usage": [
+                            "くち (mouth)",
+                            "入り口 (entrance)",
+                            "人口 (population)",
+                            "出口 (emergency exit)"
+                        ]
+                    },
+                    {
+                        "kanji": "耳",
+                        "meaning": "Ear",
+                        "onyomi": "ジ",
+                        "kunyomi": "みみ",
+                        "usage": [
+                            "みみ (ear)",
+                            "耳鼻科 (E.N.T clinic)"
+                        ]
+                    },
+                    {
+                        "kanji": "手",
+                        "meaning": "Hand",
+                        "onyomi": "シュ",
+                        "kunyomi": "て",
+                        "usage": [
+                            "て (hand)",
+                            "上手な (skillful)",
+                            "手紙 (letter)"
+                        ]
+                    },
+                    {
+                        "kanji": "足",
+                        "meaning": "Leg, Foot",
+                        "onyomi": "ソク",
+                        "kunyomi": "あし, た-りる",
+                        "usage": [
+                            "あし (leg)",
+                            "一足 (a pair (of shoes))",
+                            "足りる (to be enough)",
+                            "遠足 (excursion)"
+                        ]
+                    },
+                    {
+                        "kanji": "力",
+                        "meaning": "Power",
+                        "onyomi": "リョク, リキ",
+                        "kunyomi": "ちから",
+                        "usage": [
+                            "ちから (power)",
+                            "水力 (water power)",
+                            "体力 (physical strength)"
+                        ]
+                    }
                 ]
             },
             {
-                lesson: 5,
-                title: "People and Family",
-                kanji: [
-                    { kanji: '人', meaning: 'Person', onyomi: 'ジン, ニン', kunyomi: 'ひと', usage: ['日本人 (にほん(じん))', '一人 (ひとり)'] },
-                    { kanji: '名', meaning: 'Name', onyomi: 'メイ, ミョウ', kunyomi: 'な', usage: ['名前 (な(まえ))', '有名 (ゆうめい)'] },
-                    { kanji: '本', meaning: 'Book, Origin', onyomi: 'ホン', kunyomi: 'もと', usage: ['日本 (に(ほん))', '本 (ほん)'] },
-                    { kanji: '先', meaning: 'Previous, Ahead', onyomi: 'セン', kunyomi: 'さき', usage: ['先生 (せん(せい))', '先週 (せんしゅう)'] },
-                    { kanji: '生', meaning: 'Life, Birth', onyomi: 'セイ, ショウ', kunyomi: 'い(きる)', usage: ['学生 (がく(せい))', '生まれる (う(まれる))'] },
-                    { kanji: '学', meaning: 'Study, Learn', onyomi: 'ガク', kunyomi: 'まな(ぶ)', usage: ['大学 (だい(がく))', '学校 (がっこう)'] },
-                    { kanji: '友', meaning: 'Friend', onyomi: 'ユウ', kunyomi: 'とも', usage: ['友達 (とも(だち))'] },
-                    { kanji: '父', meaning: 'Father', onyomi: 'フ', kunyomi: 'ちち', usage: ['お父さん (お(とうさん))'] },
-                    { kanji: '母', meaning: 'Mother', onyomi: 'ボ', kunyomi: 'はは', usage: ['お母さん (お(かあさん))'] },
-                    { kanji: '子', meaning: 'Child', onyomi: 'シ, ス', kunyomi: 'こ', usage: ['子供 (こ(ども))', '女子 (じょし)'] },
-                    { kanji: '女', meaning: 'Woman, Female', onyomi: 'ジョ', kunyomi: 'おんな', usage: ['女の子 (おんな(のこ))', '女性 (じょせい)'] },
+                "lesson": 5,
+                "title": "Family, Education, and Everyday Objects (Kanji 41-50)",
+                "kanji": [
+                    {
+                        "kanji": "父",
+                        "meaning": "Father",
+                        "onyomi": "フ",
+                        "kunyomi": "ちち",
+                        "usage": [
+                            "ちち (ちち)",
+                            "お父さん (おとうさん)",
+                            "父母 (ふぼ)"
+                        ]
+                    },
+                    {
+                        "kanji": "母",
+                        "meaning": "Mother",
+                        "onyomi": "ボ",
+                        "kunyomi": "はは",
+                        "usage": [
+                            "はは (はは)",
+                            "お母さん (おかあさん)",
+                            "父母 (ふぼ)",
+                            "母国 (ぼこく)"
+                        ]
+                    },
+                    {
+                        "kanji": "先",
+                        "meaning": "Foregoing, Previous, Ahead",
+                        "onyomi": "セン",
+                        "kunyomi": "さき",
+                        "usage": [
+                            "さき (さき)",
+                            "先月 (せんげつ)",
+                            "先輩 (せんぱい)"
+                        ]
+                    },
+                    {
+                        "kanji": "生",
+                        "meaning": "To be born, Live, Raw",
+                        "onyomi": "セイ, ショウ",
+                        "kunyomi": "う-まれる, い-きる",
+                        "usage": [
+                            "生まれる (うまれる)",
+                            "生きる (いきる)",
+                            "先生 (せんせい)",
+                            "学生 (がくせい)"
+                        ]
+                    },
+                    {
+                        "kanji": "学",
+                        "meaning": "Study, Learn",
+                        "onyomi": "ガク",
+                        "kunyomi": "まな-ぶ",
+                        "usage": [
+                            "学ぶ (まなぶ)",
+                            "学生 (がくせい)",
+                            "科学 (かがく)",
+                            "大学 (だいがく)"
+                        ]
+                    },
+                    {
+                        "kanji": "校",
+                        "meaning": "School",
+                        "onyomi": "コウ",
+                        "kunyomi": "なし",
+                        "usage": [
+                            "学校 (がっこう)",
+                            "校長 (こうちょう)",
+                            "小学校 (しょうがっこう)"
+                        ]
+                    },
+                    {
+                        "kanji": "友",
+                        "meaning": "Friend",
+                        "onyomi": "ユウ",
+                        "kunyomi": "とも",
+                        "usage": [
+                            "ともだち (ともだち)",
+                            "親友 (しんゆう)"
+                        ]
+                    },
+                    {
+                        "kanji": "本",
+                        "meaning": "Book, Origin, Root",
+                        "onyomi": "ホン",
+                        "kunyomi": "もと",
+                        "usage": [
+                            "ほん (ほん)",
+                            "日本 (にほん)",
+                            "本屋 (ほんや)",
+                            "山本さん (やまもとさん)"
+                        ]
+                    },
+                    {
+                        "kanji": "毎",
+                        "meaning": "Every",
+                        "onyomi": "マイ",
+                        "kunyomi": "ごと",
+                        "usage": [
+                            "毎日 (まいにち)",
+                            "毎月 (まいつき)",
+                            "毎年 (まいとし/まいねん)",
+                            "毎朝 (まいあさ)"
+                        ]
+                    },
+                    {
+                        "kanji": "何",
+                        "meaning": "What, How many",
+                        "onyomi": "カ",
+                        "kunyomi": "なに, なん",
+                        "usage": [
+                            "なに (なに)",
+                            "何月 (なんがつ)",
+                            "何人 (なんにん)",
+                            "何時 (なんじ)"
+                        ]
+                    }
                 ]
             },
             {
-                lesson: 6,
-                title: "Actions and Movement",
-                kanji: [
-                    { kanji: '男', meaning: 'Man, Male', onyomi: 'ダン, ナン', kunyomi: 'おとこ', usage: ['男の人 (おとこ(のひと))', '男子 (だんし)'] },
-                    { kanji: '山', meaning: 'Mountain', onyomi: 'サン', kunyomi: 'やま', usage: ['富士山 (ふじ(さん))'] },
-                    { kanji: '川', meaning: 'River', onyomi: 'セン', kunyomi: 'かわ', usage: ['川上 (かわ(かみ))', 'ナイル川 (ナイルがわ)'] },
-                    { kanji: '田', meaning: 'Rice Paddy', onyomi: 'デン', kunyomi: 'た', usage: ['田中 (た(なか))'] },
-                    { kanji: '食', meaning: 'Eat, Food', onyomi: 'ショク', kunyomi: 'た(べる)', usage: ['食べ物 (た(べもの))', '食事 (しょくじ)'] },
-                    { kanji: '飲', meaning: 'Drink', onyomi: 'イン', kunyomi: 'の(む)', usage: ['飲み物 (の(みもの))', '飲む (の(む))'] },
-                    { kanji: '見', meaning: 'See, Look', onyomi: 'ケン', kunyomi: 'み(る)', usage: ['見る (み(る))', '見せる (み(せる))'] },
-                    { kanji: '聞', meaning: 'Hear, Ask', onyomi: 'ブン', kunyomi: 'き(く)', usage: ['聞く (き(く))', '新聞 (しんぶん)'] },
-                    { kanji: '言', meaning: 'Say, Word', onyomi: 'ゲン', kunyomi: 'い(う)', usage: ['言う (い(う))', '言語 (げんご)'] },
-                    { kanji: '話', meaning: 'Talk, Story', onyomi: 'ワ', kunyomi: 'はな(す)', usage: ['話す (はな(す))', '会話 (かいわ)'] },
-                    { kanji: '立', meaning: 'Stand', onyomi: 'リツ', kunyomi: 'た(つ)', usage: ['立つ (た(つ))', '国立 (こくりつ)'] },
-                    { kanji: '書', meaning: 'Write', onyomi: 'ショ', kunyomi: 'か(く)', usage: ['手紙を書く (て(がみをか)く)', '辞書 (じしょ)'] },
+                "lesson": 6,
+                "title": "Position, Directions, and Name (Kanji 51-60)",
+                "kanji": [
+                    {
+                        "kanji": "前",
+                        "meaning": "Front, Before",
+                        "onyomi": "ゼン",
+                        "kunyomi": "まえ",
+                        "usage": [
+                            "まえ (まえ)",
+                            "午前 (ごぜん)"
+                        ]
+                    },
+                    {
+                        "kanji": "後",
+                        "meaning": "Back, Behind, After",
+                        "onyomi": "ゴ, コウ",
+                        "kunyomi": "うし-ろ, あと",
+                        "usage": [
+                            "うしろ (うしろ)",
+                            "あと (あと)",
+                            "午前 (ごぜん)"
+                        ]
+                    },
+                    {
+                        "kanji": "外",
+                        "meaning": "Outside, Other, Foreign",
+                        "onyomi": "ガイ, ゲ",
+                        "kunyomi": "そと, ほか, はず-れる",
+                        "usage": [
+                            "そと (そと)",
+                            "外国 (がいこく)"
+                        ]
+                    },
+                    {
+                        "kanji": "左",
+                        "meaning": "Left",
+                        "onyomi": "サ",
+                        "kunyomi": "ひだり",
+                        "usage": [
+                            "ひだり (ひだり)",
+                            "左側 (ひだりがわ)"
+                        ]
+                    },
+                    {
+                        "kanji": "右",
+                        "meaning": "Right",
+                        "onyomi": "ウ, ユウ",
+                        "kunyomi": "みぎ",
+                        "usage": [
+                            "みぎ (みぎ)",
+                            "右手 (みぎて)",
+                            "右側 (みぎがわ)"
+                        ]
+                    },
+                    {
+                        "kanji": "東",
+                        "meaning": "East",
+                        "onyomi": "トウ",
+                        "kunyomi": "ひがし",
+                        "usage": [
+                            "ひがし (ひがし)",
+                            "東京 (とうきょう)",
+                            "東洋 (とうよう)"
+                        ]
+                    },
+                    {
+                        "kanji": "西",
+                        "meaning": "West",
+                        "onyomi": "セイ, サイ",
+                        "kunyomi": "にし",
+                        "usage": [
+                            "にし (にし)",
+                            "西口 (にしぐち)",
+                            "西洋 (せいよう)"
+                        ]
+                    },
+                    {
+                        "kanji": "南",
+                        "meaning": "South",
+                        "onyomi": "ナン",
+                        "kunyomi": "みなみ",
+                        "usage": [
+                            "みなみ (みなみ)",
+                            "南極 (なんきょく)",
+                            "南口 (みなみぐち)"
+                        ]
+                    },
+                    {
+                        "kanji": "北",
+                        "meaning": "North",
+                        "onyomi": "ホク",
+                        "kunyomi": "きた",
+                        "usage": [
+                            "きた (きた)",
+                            "北口 (きたぐち)",
+                            "北海道 (ほっかいどう)"
+                        ]
+                    },
+                    {
+                        "kanji": "名",
+                        "meaning": "Name, Famous",
+                        "onyomi": "メイ, ミョウ",
+                        "kunyomi": "な",
+                        "usage": [
+                            "なまえ (なまえ)",
+                            "有名 (ゆうめい)"
+                        ]
+                    }
                 ]
             },
             {
                 lesson: 7,
-                title: "Home and Place",
+                title: "Transportation, Entry, and Nature (10 Kanji)",
                 kanji: [
-                    { kanji: '語', meaning: 'Language, Word', onyomi: 'ゴ', kunyomi: 'かた(る)', usage: ['英語 (えい(ご))', '日本語 (にほんご)'] },
-                    { kanji: '買', meaning: 'Buy', onyomi: 'バイ', kunyomi: 'か(う)', usage: ['買い物 (か(いもの))', '買う (か(う))'] },
-                    { kanji: '読', meaning: 'Read', onyomi: 'ドク', kunyomi: 'よ(む)', usage: ['読む (よ(む))', '読書 (どくしょ)'] },
-                    { kanji: '休', meaning: 'Rest, Day Off', onyomi: 'キュウ', kunyomi: 'やす(む)', usage: ['休み (やす(み))', '休日 (きゅうじつ)'] },
-                    { kanji: '行', meaning: 'Go, Conduct', onyomi: 'コウ, ギョウ', kunyomi: 'い(く)', usage: ['銀行 (ぎん(こう))', '行く (い(く))', '旅行 (りょこう)'] },
-                    { kanji: '来', meaning: 'Come, Next', onyomi: 'ライ', kunyomi: 'く(る)', usage: ['来る (く(る))', '来月 (らいげつ)'] },
-                    { kanji: '入', meaning: 'Enter, Insert', onyomi: 'ニュウ', kunyomi: 'はい(る)', usage: ['入る (はい(る))', '入学 (にゅうがく)'] },
-                    { kanji: '出', meaning: 'Exit, Leave', onyomi: 'シュツ', kunyomi: 'で(る)', usage: ['出かける (で(かける))', '出す (だす)'] },
-                    { kanji: '会', meaning: 'Meet, Association', onyomi: 'カイ, エ', kunyomi: 'あ(う)', usage: ['会社 (かい(しゃ))', '会う (あ(う))'] },
-                    { kanji: '社', meaning: 'Company, Shrine', onyomi: 'シャ', kunyomi: 'やしろ', usage: ['会社 (かい(しゃ))'] },
-                    { kanji: '店', meaning: 'Shop, Store', onyomi: 'テン', kunyomi: 'みせ', usage: ['喫茶店 (きっさ(てん))', '店 (みせ)'] },
-                    { kanji: '駅', meaning: 'Station', onyomi: 'エキ', kunyomi: '', usage: ['駅前 (えき(まえ))'] },
+                    // From user images (previously L7)
+                    { kanji: '気', meaning: 'Spirit, Air', onyomi: 'キ, ケ', kunyomi: 'いき', usage: ['天気 (てんき)', '人気 (にんき)', '気持ち (きもち)'] },
+                    { kanji: '車', meaning: 'Car, Vehicle', onyomi: 'シャ', kunyomi: 'くるま', usage: ['車 (くるま)', '電車 (でんしゃ)', '自動車 (じどうしゃ)'] },
+                    { kanji: '門', meaning: 'Gate', onyomi: 'モン', kunyomi: 'かど', usage: ['門 (もん)', '正門 (せいもん)', '専門 (せんもん)'] },
+                    // MISSING KANJI: 午 (Noon) - ADDED BACK
+                    { kanji: '午', meaning: 'Noon', onyomi: 'ゴ', kunyomi: 'うま', usage: ['午前 (ごぜん)', '午後 (ごご)', 'ひる (noon)'] },
+                    // From previous L8 (Animals & Nature)
+                    { kanji: '牛', meaning: 'Cow, Ox', onyomi: 'ギュウ', kunyomi: 'うし', usage: ['牛乳 (ぎゅう(にゅう))', '牛肉 (ぎゅう(にく))', '水牛 (すいぎゅう)'] },
+                    { kanji: '馬', meaning: 'Horse', onyomi: 'バ', kunyomi: 'うま', usage: ['馬車 (ば(しゃ))', '木馬 (もくば)', '乗馬 (じょうば)'] },
+                    { kanji: '魚', meaning: 'Fish', onyomi: 'ギョ', kunyomi: 'さかな', usage: ['魚 (さかな)', '金魚 (きんぎょ)', '人魚 (にんぎょ)'] },
+                    { kanji: '貝', meaning: 'Shellfish, Shell', onyomi: '', kunyomi: 'かい', usage: ['貝 (かい)', '貝がら (かいがら)'] },
+                    { kanji: '雨', meaning: 'Rain', onyomi: 'ウ', kunyomi: 'あめ', usage: ['雨 (あめ)', '大雨 (おおあめ)', '梅雨 (つゆ)'] },
+                    { kanji: '天', meaning: 'Heaven, Sky', onyomi: 'テン', kunyomi: 'あま', usage: ['天気 (てんき)', '天国 (てんごく)', '天下 (てんか)'] },
                 ]
             },
             {
-                lesson: 8,
-                title: "Direction, Size, and Adjectives",
+                "lesson": 8,
+                "title": "Size, Quality, and Time (Kanji 71-80)",
+                "kanji": [
+                    {
+                        "kanji": "大",
+                        "meaning": "Big, Large",
+                        "onyomi": "ダイ, タイ",
+                        "kunyomi": "おお-きい",
+                        "usage": [
+                            "大きい (おおきい)",
+                            "大学 (だいがく)",
+                            "大会 (たいかい)"
+                        ]
+                    },
+                    {
+                        "kanji": "小",
+                        "meaning": "Small, Little",
+                        "onyomi": "ショウ",
+                        "kunyomi": "ちい-さい",
+                        "usage": [
+                            "小さい (ちいさい)",
+                            "小川 (おがわ)",
+                            "小学校 (しょうがっこう)"
+                        ]
+                    },
+                    {
+                        "kanji": "高",
+                        "meaning": "High, Tall, Expensive",
+                        "onyomi": "コウ",
+                        "kunyomi": "たか-い",
+                        "usage": [
+                            "高い (たかい)",
+                            "高校生 (こうこうせい)",
+                            "円高 (えんだか)"
+                        ]
+                    },
+                    {
+                        "kanji": "安",
+                        "meaning": "Cheap, Safe, Peaceful",
+                        "onyomi": "アン",
+                        "kunyomi": "やす-い",
+                        "usage": [
+                            "やすい (やすい)",
+                            "あんぜん (あんぜん)",
+                            "安心する (あんしんする)"
+                        ]
+                    },
+                    {
+                        "kanji": "新",
+                        "meaning": "New",
+                        "onyomi": "シン",
+                        "kunyomi": "あたら-しい",
+                        "usage": [
+                            "新しい (あたらしい)",
+                            "新聞 (しんぶん)",
+                            "新人 (しんじん)"
+                        ]
+                    },
+                    {
+                        "kanji": "古",
+                        "meaning": "Old",
+                        "onyomi": "コ",
+                        "kunyomi": "ふる-い",
+                        "usage": [
+                            "古い (ふるい)",
+                            "中古車 (ちゅうこしゃ)"
+                        ]
+                    },
+                    {
+                        "kanji": "長",
+                        "meaning": "Long, Chief, Head",
+                        "onyomi": "チョウ",
+                        "kunyomi": "なが-い",
+                        "usage": [
+                            "長い (ながい)",
+                            "社長 (しゃちょう)",
+                            "校長 (こうちょう)"
+                        ]
+                    },
+                    {
+                        "kanji": "多",
+                        "meaning": "Many, Much",
+                        "onyomi": "タ",
+                        "kunyomi": "おお-い",
+                        "usage": [
+                            "多い (おおい)",
+                            "多少 (たしょう)",
+                            "多数決 (たすうけつ)"
+                        ]
+                    },
+                    {
+                        "kanji": "少",
+                        "meaning": "Few, Little",
+                        "onyomi": "ショウ",
+                        "kunyomi": "すく-ない, すこ-し",
+                        "usage": [
+                            "少ない (すくない)",
+                            "少年 (しょうねん)",
+                            "少女 (しょうじょ)"
+                        ]
+                    },
+                    {
+                        "kanji": "早",
+                        "meaning": "Early, Fast",
+                        "onyomi": "ソウ",
+                        "kunyomi": "はや-い",
+                        "usage": [
+                            "早い (はやい)",
+                            "早朝 (そうちょう)",
+                            "早送り (はやおくり)"
+                        ]
+                    }
+                ]
+            },
+        
+            {
+                lesson: 9,
+                title: "Direction, Size, and Adjectives (12 Kanji)",
                 kanji: [
                     { kanji: '道', meaning: 'Road, Way', onyomi: 'ドウ', kunyomi: 'みち', usage: ['柔道 (じゅう(どう))', '道 (みち)'] },
                     { kanji: '国', meaning: 'Country', onyomi: 'コク', kunyomi: 'くに', usage: ['外国 (がい(こく))', '国 (くに)'] },
@@ -297,8 +1020,8 @@
                 ]
             },
             {
-                lesson: 9,
-                title: "Colors and Body",
+                lesson: 10,
+                title: "Colors and Body (12 Kanji)",
                 kanji: [
                     { kanji: '早', meaning: 'Early, Fast', onyomi: 'ソウ', kunyomi: 'はや(い)', usage: ['早い (はや(い))', '早朝 (そうちょう)'] },
                     { kanji: '白', meaning: 'White', onyomi: 'ハク', kunyomi: 'しろ(い)', usage: ['白い (しろ(い))'] },
@@ -312,7 +1035,6 @@
                     { kanji: '耳', meaning: 'Ear', onyomi: 'ジ', kunyomi: 'みみ', usage: ['耳 (みみ)', '耳鼻科 (じびか)'] },
                     { kanji: '手', meaning: 'Hand', onyomi: 'シュ', kunyomi: 'て', usage: ['上手 (じょう(ず))', '手紙 (てがみ)'] },
                     { kanji: '足', meaning: 'Foot, Leg', onyomi: 'ソク', kunyomi: 'あし', usage: ['足 (あし)', '一足 (いっそく)'] },
-                    { kanji: '雨', meaning: 'Rain', onyomi: 'ウ', kunyomi: 'あめ', usage: ['雨が降る (あめ(がふ)る)'] },
                 ]
             }
         ];
@@ -327,10 +1049,12 @@
         let isCardFlipped = false;
         let isDarkMode = true;
         let quizFeedback = null;
+        let isMeaningHidden = false; // NEW state for flashcard mode
+        let bookmarkedKanji = []; // Stores kanji characters (e.g., ['一', '人'])
 
         // Lesson state for all modes
-        let selectedLessons = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let studyKanjiList = ALL_KANJI; // This list will be filtered based on mode/selection
+        let selectedLessons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let studyKanjiList = ALL_KANJI; 
         
         // Quiz interval state
         let quizIntervalId = null;
@@ -347,7 +1071,7 @@
         // --- DOM Elements ---
         const appContainer = document.getElementById('app-container');
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const homeButton = document.getElementById('homeButton'); // NEW HOME BUTTON
+        const homeButton = document.getElementById('homeButton');
         const modeControls = document.getElementById('modeControls');
         const mainContent = document.getElementById('mainContent');
         const progressIndicator = document.getElementById('progressIndicator');
@@ -367,6 +1091,50 @@
 
         // --- Utility Functions ---
 
+        const BOOKMARKS_KEY = 'n5KanjiBookmarks';
+
+        function loadBookmarks() {
+            try {
+                const storedBookmarks = localStorage.getItem(BOOKMARKS_KEY);
+                bookmarkedKanji = storedBookmarks ? JSON.parse(storedBookmarks) : [];
+            } catch (e) {
+                console.error("Could not load bookmarks from local storage:", e);
+                bookmarkedKanji = [];
+            }
+        }
+
+        function saveBookmarks() {
+            try {
+                localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarkedKanji));
+            } catch (e) {
+                console.error("Could not save bookmarks to local storage:", e);
+            }
+        }
+
+        window.toggleBookmark = function(kanji) {
+            const index = bookmarkedKanji.indexOf(kanji);
+            if (index > -1) {
+                bookmarkedKanji.splice(index, 1); // Remove
+                showToast('Removed from Bookmarks', 'bg-red-500');
+            } else {
+                bookmarkedKanji.push(kanji); // Add
+                showToast('Bookmarked!', 'bg-green-500');
+            }
+            saveBookmarks();
+            renderApp(); // Re-render to update the bookmark icon status
+        }
+        
+        function showToast(message, bgColor) {
+             const toastDiv = document.createElement('div');
+             toastDiv.className = `fixed top-4 right-4 ${bgColor} text-white p-3 rounded-lg shadow-xl z-50 transition-opacity duration-300`;
+             toastDiv.textContent = message;
+             document.body.appendChild(toastDiv);
+             setTimeout(() => {
+                 toastDiv.style.opacity = '0';
+                 setTimeout(() => toastDiv.remove(), 300);
+             }, 2500);
+        }
+
         // Simple shuffle function
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -380,14 +1148,26 @@
          * Compiles the list of kanji for the current study session based on selectedLessons.
          */
         function compileStudyList() {
-            let filteredKanji = KANJI_LESSONS
-                .filter(lesson => selectedLessons.includes(lesson.lesson))
-                .flatMap(lesson => lesson.kanji);
+            let filteredKanji = [];
             
-            if (currentMode === 'quiz') {
+            // Check for "Bookmarked Cards" selection (lesson='bookmarks' is a string)
+            const studyingBookmarks = selectedLessons.includes('bookmarks'); 
+
+            if (studyingBookmarks) {
+                // Filter ALL kanji to include only those in the bookmarkedKanji array
+                filteredKanji = ALL_KANJI.filter(k => bookmarkedKanji.includes(k.kanji));
+            } else {
+                // Standard lesson filtering
+                filteredKanji = KANJI_LESSONS
+                    .filter(lesson => selectedLessons.includes(lesson.lesson))
+                    .flatMap(lesson => lesson.kanji);
+            }
+            
+            // SHUFFLE only for Flashcard and Quiz
+            if (currentMode === 'quiz' || currentMode === 'flashcard') {
                 studyKanjiList = shuffleArray(filteredKanji);
             } else {
-                // For list/flashcard, preserve original lesson order
+                // For list view, preserve original lesson order
                 studyKanjiList = filteredKanji;
             }
 
@@ -467,6 +1247,7 @@
             quizFeedback = null;
             isCardFlipped = false;
             currentKanjiIndex = 0;
+            isMeaningHidden = false; // Reset flashcard state
             renderApp();
         }
 
@@ -483,7 +1264,7 @@
             navButtons.style.display = 'none';
             stopQuizTimers(); // Ensure timers are stopped on view change
             
-            // 2.5. NEW: Control Home Button visibility
+            // 2.5. Control Home Button visibility
             homeButton.style.display = currentView !== 'mode-select' ? 'block' : 'none';
             
             // 3. Render view-specific content
@@ -533,16 +1314,37 @@
         }
 
         function renderLessonSelectPage() {
-            const isQuiz = currentMode === 'quiz';
+            const isFlashcardMode = currentMode === 'flashcard';
+            const isQuizMode = currentMode === 'quiz';
             
-            modeIndicator.textContent = `${isQuiz ? 'Quiz' : (currentMode === 'flashcard' ? 'Flashcard' : 'List')} Mode Selection`;
-            hintText.textContent = isQuiz 
-                ? 'Select multiple lessons for a mixed quiz, or use the Settings button to configure the auto-timing.'
-                : 'Select a single lesson to begin browsing.';
+            modeIndicator.textContent = `${currentMode.charAt(0).toUpperCase() + currentMode.slice(1)} Mode Selection`;
+            hintText.textContent = (isFlashcardMode || isQuizMode)
+                ? 'Select multiple lessons for a shuffled study session (Quiz or Flashcard), or use the Settings button.'
+                : 'Select a single lesson to begin browsing in List View.';
 
-            // Setup radio/checkbox input types
-            const inputType = isQuiz ? 'checkbox' : 'radio';
-            const inputName = isQuiz ? '' : 'lessonSelection';
+            const inputType = 'checkbox';
+            const inputName = 'lessonSelection';
+            
+            // --- NEW: Bookmarked Cards Option ---
+            const hasBookmarks = bookmarkedKanji.length > 0;
+            const isBookmarkedSelected = selectedLessons.includes('bookmarks');
+            
+            let bookmarkOptionHtml = '';
+            // Only show bookmark option for Flashcard and Quiz modes
+            if ((isFlashcardMode || isQuizMode) && hasBookmarks) {
+                bookmarkOptionHtml = `
+                    <label class="flex items-center space-x-3 p-3 bg-red-100 dark:bg-red-900 rounded-lg cursor-pointer hover:bg-red-200 dark:hover:bg-red-800 transition">
+                        <input type="${inputType}" 
+                               name="${inputName}"
+                               data-lesson="bookmarks" 
+                               class="h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500 lesson-checkbox"
+                               ${isBookmarkedSelected ? 'checked' : ''}>
+                        <span class="text-red-900 dark:text-red-300 font-bold">
+                            Bookmarked Cards (${bookmarkedKanji.length} Kanji)
+                        </span>
+                    </label>
+                `;
+            }
 
             const lessonCheckboxesHtml = KANJI_LESSONS.map(lesson => {
                 const isChecked = selectedLessons.includes(lesson.lesson);
@@ -552,17 +1354,26 @@
                         <input type="${inputType}" 
                                name="${inputName}"
                                data-lesson="${lesson.lesson}" 
-                               class="h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                               class="h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 lesson-checkbox"
                                ${isChecked ? 'checked' : ''}>
                         <span class="text-gray-900 dark:text-white font-medium">
-                            Lesson ${lesson.lesson}: ${lesson.title} (${lesson.kanji.length} Kanji)
+                            Lesson ${lesson.lesson}: ${lesson.title}
                         </span>
                     </label>
                 `;
             }).join('');
             
+            // Calculate selected Kanji count
+            const selectedKanjiCount = isBookmarkedSelected
+                ? bookmarkedKanji.length
+                : KANJI_LESSONS
+                    .filter(lesson => selectedLessons.includes(lesson.lesson))
+                    .flatMap(lesson => lesson.kanji)
+                    .length;
+
+            
             // Build Controls
-            const settingsBtnHtml = isQuiz ? `
+            const settingsBtnHtml = isQuizMode ? `
                 <button onclick="renderSettingsModal()" class="py-2 px-4 text-sm font-semibold rounded-lg bg-gray-500 hover:bg-gray-600 text-white shadow-md transition duration-150">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.5.342 1.174.298 1.724-.066z" />
@@ -571,28 +1382,111 @@
                 </button>
             ` : '';
             
-            // Removed redundant "Back to Modes" button here. Global Home button handles it.
             modeControls.innerHTML = `
                 ${settingsBtnHtml}
                 <button id="startStudyButton" onclick="handleLessonSelectConfirm()" class="py-2 px-4 text-sm font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition duration-150">
-                    Start ${isQuiz ? 'Quiz' : 'Study'}
+                    Start ${currentMode.charAt(0).toUpperCase() + currentMode.slice(1)} (${selectedKanjiCount} Kanji)
                 </button>
             `;
 
 
             mainContent.innerHTML = `
                 <div class="w-full max-w-lg">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Select Lessons for ${currentMode.toUpperCase()}</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Select Lessons</h2>
+                    
+                    <div class="flex space-x-2 mb-4">
+                         <button onclick="handleSelectAll(true)" class="flex-1 py-2 px-4 text-sm rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition duration-150">
+                            Select All Lessons
+                        </button>
+                        <button onclick="handleSelectAll(false)" class="flex-1 py-2 px-4 text-sm rounded-lg bg-gray-500 hover:bg-gray-600 text-white transition duration-150">
+                            Unselect All
+                        </button>
+                    </div>
+
                     <div id="lessonCheckboxes" class="grid grid-cols-2 gap-4 max-h-96 overflow-y-auto p-2 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+                        ${bookmarkOptionHtml}
                         ${lessonCheckboxesHtml}
                     </div>
                 </div>
             `;
+            
+            // Attach live event listener to update the start button count and handle bookmark exclusivity
+            document.querySelectorAll('.lesson-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateStartButtonCount);
+            });
+            updateStartButtonCount(); // Initial count load
         }
+        
+        function updateStartButtonCount() {
+            const checkboxes = document.querySelectorAll('.lesson-checkbox');
+            let currentSelectedLessons = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.dataset.lesson); 
+
+            let currentSelectedKanjiCount;
+            const studyingBookmarks = currentSelectedLessons.includes('bookmarks');
+            
+            // Logic for mutual exclusion between lessons and bookmarks
+            checkboxes.forEach(cb => {
+                if (cb.dataset.lesson === 'bookmarks') {
+                    // This is the bookmarks checkbox
+                    cb.disabled = false;
+                } else {
+                    // Lesson checkboxes are disabled if bookmarks is selected
+                    cb.disabled = studyingBookmarks;
+                }
+            });
+
+            if (studyingBookmarks) {
+                currentSelectedKanjiCount = bookmarkedKanji.length;
+            } else {
+                // Normal lesson filtering (convert non-bookmark selections back to numbers)
+                const numericSelections = currentSelectedLessons.map(l => parseInt(l)).filter(n => !isNaN(n));
+                currentSelectedKanjiCount = KANJI_LESSONS
+                    .filter(lesson => numericSelections.includes(lesson.lesson))
+                    .flatMap(lesson => lesson.kanji)
+                    .length;
+            }
+            
+            const startButton = document.getElementById('startStudyButton');
+            if (startButton) {
+                 startButton.innerHTML = `Start ${currentMode.charAt(0).toUpperCase() + currentMode.slice(1)} (${currentSelectedKanjiCount} Kanji)`;
+                 startButton.disabled = currentSelectedKanjiCount === 0;
+            }
+        }
+
+        function handleSelectAll(select) {
+            const checkboxes = document.querySelectorAll('.lesson-checkbox');
+            checkboxes.forEach(cb => {
+                // Ensure 'Select All' doesn't select bookmarks unless specifically intended 
+                if (cb.dataset.lesson !== 'bookmarks') {
+                    cb.checked = select;
+                }
+            });
+            
+            // FIX: Check if the bookmark element exists before trying to access it.
+            const bookmarkCheckbox = document.querySelector('[data-lesson="bookmarks"]');
+            
+            if (bookmarkCheckbox) {
+                 // If selecting all, we need to uncheck 'bookmarks' manually to prevent exclusivity conflict.
+                 bookmarkCheckbox.checked = false;
+            }
+
+            updateStartButtonCount();
+        }
+
 
         function renderStudyView() {
             const totalKanji = studyKanjiList.length;
             const currentKanji = studyKanjiList[currentKanjiIndex] || {};
+            
+            if (totalKanji === 0) {
+                 // Handle empty bookmark list gracefully
+                 showToast('The selected study list is empty. Returning to selection.', 'bg-red-600');
+                 currentView = 'lesson-select';
+                 renderApp();
+                 return;
+            }
             
             modeIndicator.textContent = currentMode === 'quiz' ? 'Automated Quiz' : 
                                        (currentMode === 'flashcard' ? 'Flashcard Review' : 'Kanji List');
@@ -610,7 +1504,7 @@
             // 2. Setup navigation buttons
             navButtons.style.display = 'flex';
             
-            // Label next button based on mode
+            // Label buttons based on mode
             if (currentMode === 'list') {
                 prevButton.textContent = 'Previous Lesson';
                 nextButton.textContent = 'Next Lesson';
@@ -624,7 +1518,7 @@
                 hintText.textContent = !isCardFlipped ? 'Tap the card to reveal the readings and usage.' : '';
             } else {
                 // Quiz Mode - Navigation is disabled because it's automated
-                prevButton.textContent = 'Exit Quiz'; // Button to manually exit to lesson select
+                prevButton.textContent = 'Exit Quiz'; 
                 nextButton.textContent = 'Quiz Active';
                 nextButton.classList.add('opacity-50', 'pointer-events-none');
                 prevButton.classList.remove('bg-gray-200', 'hover:bg-gray-300', 'dark:bg-gray-700', 'dark:hover:bg-gray-600', 'text-gray-800', 'dark:text-white');
@@ -649,13 +1543,15 @@
             }
         }
 
-        // --- Core Content Renderers (Unchanged logic) ---
+        // --- Core Content Renderers ---
 
         function renderListView(kanjiList) {
+             const isBookmarkedStudy = selectedLessons.includes('bookmarks');
              const lessonData = KANJI_LESSONS.find(l => l.lesson === selectedLessons[0]) || {title: 'Mixed Lessons'};
-            const lessonTitle = kanjiList.length === ALL_KANJI.length ? 'All N5 Kanji' : `Lessons: ${selectedLessons.join(', ')} (${lessonData.title})`;
+             const lessonTitle = isBookmarkedStudy ? `Bookmarked Kanji (${kanjiList.length} total)` : lessonData.title;
 
-
+            // ... (rest of renderListView is unchanged)
+            
             const kanjiRows = kanjiList.map((k, index) => {
                 const usageHtml = k.usage.map(u => `<li>${u}</li>`).join('');
 
@@ -696,17 +1592,40 @@
                 </div>
             `;
             mainContent.innerHTML = listHtml;
-            // The navigation buttons are repurposed to cycle the selected lesson's first index
         }
 
+        window.toggleMeaningVisibility = function() {
+             isMeaningHidden = !isMeaningHidden;
+             isCardFlipped = false; // Always flip back to front when toggling visibility
+             renderApp();
+        }
 
         function renderFlashcard(kanjiData) {
             const lesson = KANJI_LESSONS.find(l => l.kanji.some(k => k.kanji === kanjiData.kanji));
-            const lessonTitle = lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Kanji';
+            const lessonTitle = selectedLessons.includes('bookmarks') ? 'Bookmarked Cards' : (lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Kanji');
             
             const usageItems = kanjiData.usage.map(u => `<li class="text-base sm:text-lg font-medium text-gray-800 dark:text-gray-100">${u}</li>`).join('');
+            const isBookmarked = bookmarkedKanji.includes(kanjiData.kanji);
+
+            // Flashcard controls (Bookmark and Meaning Toggle)
+            const flashcardControls = `
+                <div class="flex justify-between w-full max-w-sm mx-auto mb-4">
+                    <button onclick="toggleMeaningVisibility()" class="py-2 px-3 text-xs font-semibold rounded-lg transition duration-150 ${isMeaningHidden ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'} shadow-md">
+                        ${isMeaningHidden ? 'Show Meaning' : 'Hide Meaning'}
+                    </button>
+                    
+                    <button onclick="toggleBookmark('${kanjiData.kanji}')" class="p-2 rounded-full transition duration-150 ${isBookmarked ? 'bg-yellow-200 text-yellow-500 hover:bg-yellow-300 dark:bg-yellow-800 dark:text-yellow-300 dark:hover:bg-yellow-700' : 'text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700'}">
+                        <!-- Star Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.152A1.5 1.5 0 0113.151 2.152l3.228 6.551 7.21.654a1.5 1.5 0 01.832 2.584l-5.26 5.147 1.244 7.234a1.5 1.5 0 01-2.176 1.581L12 18.067l-6.491 3.415a1.5 1.5 0 01-2.176-1.581l1.244-7.234L.93 11.941a1.5 1.5 0 01.832-2.584l7.21-.654 3.228-6.551z" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+
 
             const cardHtml = `
+                ${flashcardControls} 
                 <div id="flashcard" class="perspective-1000 w-full max-w-sm h-96 mx-auto cursor-pointer" onclick="handleFlip()">
                     <div id="cardInner" class="card-inner relative w-full h-full preserve-3d shadow-2xl rounded-2xl ${isCardFlipped ? 'flipped' : ''}">
                         
@@ -715,7 +1634,7 @@
                             <p class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 mb-2">${lessonTitle}</p>
                             <p class="text-7xl sm:text-9xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">${kanjiData.kanji}</p>
                             <h2 class="text-2xl font-semibold tracking-wider text-gray-700 dark:text-gray-300">
-                                ${kanjiData.meaning}
+                                ${!isCardFlipped && isMeaningHidden ? '— Meaning Hidden —' : kanjiData.meaning}
                             </h2>
                             <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">Tap to see details</p>
                         </div>
@@ -749,7 +1668,7 @@
 
         function renderQuizMode(kanjiData) {
             const lesson = KANJI_LESSONS.find(l => l.kanji.some(k => k.kanji === kanjiData.kanji));
-            const lessonTitle = lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Lessons';
+            const lessonTitle = selectedLessons.includes('bookmarks') ? 'Bookmarked Cards' : (lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Lessons');
 
             let quizContentHtml;
             
@@ -818,67 +1737,67 @@
         
         function handleModeSelect(mode) {
             currentMode = mode;
-            // Reset selectedLessons to ALL to ensure the lesson select page shows everything available,
-            // but the initial study list will be filtered down to Lesson 1 unless changed by the user.
+            // Reset selectedLessons to ALL (or just 1 for list)
             selectedLessons = KANJI_LESSONS.map(l => l.lesson);
             
-            // For List/Flashcard, we enforce selection of the first lesson initially for the view logic
-            if (currentMode !== 'quiz') {
+            if (currentMode === 'list') {
                 selectedLessons = [KANJI_LESSONS[0].lesson];
+            } else if (currentMode === 'flashcard') {
+                 // Check if the user has bookmarks and default to bookmark study if they do, otherwise select all lessons.
+                 if (bookmarkedKanji.length > 0) {
+                     selectedLessons = ['bookmarks'];
+                 } else {
+                     selectedLessons = KANJI_LESSONS.map(l => l.lesson);
+                 }
             }
             
             currentView = 'lesson-select';
+            isMeaningHidden = false; // Reset flashcard state
             renderApp();
         }
 
 
         function handleLessonSelectConfirm() {
-            const isQuiz = currentMode === 'quiz';
-            const inputType = isQuiz ? 'checkbox' : 'radio';
-            const checkboxes = document.querySelectorAll(`#lessonCheckboxes input[type="${inputType}"]`);
+            const checkboxes = document.querySelectorAll('.lesson-checkbox');
             
             const newlySelectedLessons = Array.from(checkboxes)
                 .filter(cb => cb.checked)
-                .map(cb => parseInt(cb.dataset.lesson));
+                .map(cb => {
+                    const lesson = cb.dataset.lesson;
+                    return lesson === 'bookmarks' ? lesson : parseInt(lesson); // Keep 'bookmarks' as string
+                });
             
             if (newlySelectedLessons.length === 0) {
-                 // For List and Flashcard, if nothing is selected, force Lesson 1
-                 if (!isQuiz) {
-                    newlySelectedLessons.push(KANJI_LESSONS[0].lesson);
-                 } else {
-                    // Using custom message box instead of alert()
-                    (function(){
-                        const errorMsg = 'You must select at least one lesson for the Quiz.';
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50';
-                        errorDiv.textContent = errorMsg;
-                        document.body.appendChild(errorDiv);
-                        setTimeout(() => errorDiv.remove(), 3000);
-                    })();
-                    return;
-                 }
+                 showToast('You must select at least one lesson to start the study session.', 'bg-red-600');
+                 return;
             }
             
-            // For List/Flashcard, ensure only one lesson is selected
-            if (!isQuiz && newlySelectedLessons.length > 1) {
-                // If somehow multiple are checked, force single selection (only the first one)
-                selectedLessons = [newlySelectedLessons[0]];
+            // Handle mutual exclusion/prioritization for bookmarks
+            const studyingBookmarks = newlySelectedLessons.includes('bookmarks');
+            if (studyingBookmarks) {
+                selectedLessons = ['bookmarks'];
             } else {
-                selectedLessons = newlySelectedLessons;
+                // Filter out any potential 'bookmarks' string if it somehow slipped through
+                selectedLessons = newlySelectedLessons.filter(l => typeof l === 'number');
             }
+            
+            // For List, ensure only one lesson is selected
+            if (currentMode === 'list') {
+                // List mode cannot use 'bookmarks', force back to Lesson 1 if bookmarks was selected
+                if (selectedLessons.includes('bookmarks')) {
+                     selectedLessons = [KANJI_LESSONS[0].lesson];
+                }
+                if (selectedLessons.length > 1) {
+                    const firstNumeric = selectedLessons.find(l => typeof l === 'number');
+                    selectedLessons = [firstNumeric || KANJI_LESSONS[0].lesson];
+                }
+            }
+
 
             compileStudyList();
             
             if (studyKanjiList.length === 0) {
-                 // Using custom message box instead of alert()
-                 (function(){
-                    const errorMsg = 'Selected lessons contain no kanji. Please check your selection.';
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50';
-                    errorDiv.textContent = errorMsg;
-                    document.body.appendChild(errorDiv);
-                    setTimeout(() => errorDiv.remove(), 3000);
-                })();
+                 showToast('Selected lessons contain no kanji. Please check your selection.', 'bg-red-600');
                  return;
             }
 
@@ -906,10 +1825,9 @@
             quizFeedback = null; 
             stopQuizTimers(); 
             
-            const totalLessons = KANJI_LESSONS.length;
-
-            if (currentMode === 'list' || currentMode === 'flashcard') {
-                // Cycle through lessons (using the current single selected lesson as the base)
+            if (currentMode === 'list') {
+                // List Mode: Cycles the selected LESSON
+                const totalLessons = KANJI_LESSONS.length;
                 const currentLessonNumber = selectedLessons[0];
                 const currentLessonIndex = KANJI_LESSONS.findIndex(l => l.lesson === currentLessonNumber);
                 
@@ -917,19 +1835,21 @@
                 
                 selectedLessons = [KANJI_LESSONS[nextIndex].lesson];
                 compileStudyList();
+            } else if (currentMode === 'flashcard') {
+                // Flashcard Mode: Cycles the CARD within the study list
+                if (currentKanjiIndex < studyKanjiList.length - 1) {
+                    currentKanjiIndex++;
+                } else {
+                    currentKanjiIndex = 0; 
+                    showToast(`Session complete! Restarting and reshuffling the ${studyKanjiList.length} cards.`, 'bg-indigo-600');
+                    compileStudyList(); // Re-shuffle the cards
+                }
             } else { // Quiz mode 
                  if (currentKanjiIndex < studyKanjiList.length - 1) {
                     currentKanjiIndex++;
                  } else {
                     // Quiz Finished
-                    (function(){
-                        const finishMsg = `Quiz finished! You completed ${studyKanjiList.length} kanji. Returning to setup.`;
-                        const msgDiv = document.createElement('div');
-                        msgDiv.className = 'fixed top-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-xl z-50';
-                        msgDiv.textContent = finishMsg;
-                        document.body.appendChild(msgDiv);
-                        setTimeout(() => msgDiv.remove(), 4000);
-                    })();
+                    showToast(`Quiz finished! You completed ${studyKanjiList.length} kanji. Returning to setup.`, 'bg-green-600');
                     currentView = 'lesson-select'; // Go back to lesson selection
                  }
             }
@@ -944,8 +1864,8 @@
             
             const totalLessons = KANJI_LESSONS.length;
 
-            if (currentMode === 'list' || currentMode === 'flashcard') {
-                // Cycle through lessons (using the current single selected lesson as the base)
+            if (currentMode === 'list') {
+                // List Mode: Cycles the selected LESSON
                 const currentLessonNumber = selectedLessons[0];
                 const currentLessonIndex = KANJI_LESSONS.findIndex(l => l.lesson === currentLessonNumber);
                 
@@ -953,6 +1873,13 @@
                 
                 selectedLessons = [KANJI_LESSONS[prevIndex].lesson];
                 compileStudyList();
+            } else if (currentMode === 'flashcard') {
+                // Flashcard Mode: Cycles the CARD within the study list
+                if (currentKanjiIndex > 0) {
+                    currentKanjiIndex--;
+                } else {
+                    currentKanjiIndex = studyKanjiList.length - 1; // Wrap around to the end
+                }
             } else {
                 // Quiz Mode: Back button goes to lesson select
                 currentView = 'lesson-select'; 
@@ -981,15 +1908,7 @@
             const newReviewDelay = parseInt(reviewDelayInput.value);
             
             if (isNaN(newRevealDelay) || newRevealDelay < 1 || isNaN(newReviewDelay) || newReviewDelay < 1) {
-                // Using an inline function to avoid global alert() issue
-                (function(){
-                    const errorMsg = 'Both delay times must be positive whole numbers.';
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50';
-                    errorDiv.textContent = errorMsg;
-                    document.body.appendChild(errorDiv);
-                    setTimeout(() => errorDiv.remove(), 3000);
-                })();
+                 showToast('Both delay times must be positive whole numbers.', 'bg-red-600');
                 return;
             }
 
@@ -1006,13 +1925,15 @@
                 document.documentElement.classList.add('dark');
             }
             
+            loadBookmarks(); // LOAD BOOKMARKS FIRST
+
             // Initial setup for default selection (Lesson 1)
             selectedLessons = [1];
             compileStudyList();
 
             // Attach static event listeners
             darkModeToggle.addEventListener('click', toggleDarkMode);
-            homeButton.addEventListener('click', handleGoToMain); // ATTACH HOME BUTTON LISTENER
+            homeButton.addEventListener('click', handleGoToMain); 
             
             // Settings modal events
             closeSettingsModalButton.addEventListener('click', () => settingsModal.style.display = 'none');
