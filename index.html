@@ -48,6 +48,23 @@
         .quiz-disabled {
             pointer-events: none;
         }
+        
+        /* Styles for hidden list cell content */
+        .hidden-cell-content {
+            opacity: 0;
+            user-select: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: block;
+        }
+        .reveal-cell-placeholder {
+            opacity: 1;
+            font-style: italic;
+            cursor: pointer;
+            font-size: 0.75rem; /* text-xs */
+            display: block;
+            color: #6b7280; /* gray-500 */
+        }
     </style>
     <script>
         tailwind.config = {
@@ -469,7 +486,7 @@
                         "onyomi": "カ, ゲ",
                         "kunyomi": "した, さ-がる",
                         "usage": [
-                            "した (した)",
+                            "した (きた)",
                             "下がる (さがる)",
                             "地下鉄 (ちかてつ)"
                         ]
@@ -1000,38 +1017,38 @@
         
             {
                 lesson: 9,
-                title: "Direction, Size, and Adjectives (12 Kanji)",
+                title: "Daily Actions and Places (12 Kanji)",
                 kanji: [
-                    { kanji: '道', meaning: 'Road, Way', onyomi: 'ドウ', kunyomi: 'みち', usage: ['柔道 (じゅう(どう))', '道 (みち)'] },
-                    { kanji: '国', meaning: 'Country', onyomi: 'コク', kunyomi: 'くに', usage: ['外国 (がい(こく))', '国 (くに)'] },
-                    { kanji: '大', meaning: 'Large, Big', onyomi: 'ダイ, タイ', kunyomi: 'おお(きい)', usage: ['大きい (おお(きい))', '大学 (だいがく)'] },
-                    { kanji: '小', meaning: 'Small', onyomi: 'ショウ', kunyomi: 'ちい(さい)', usage: ['小さい (ちい(さい))', '小学校 (しょうがっこう)'] },
-                    { kanji: '高', meaning: 'High, Expensive', onyomi: 'コウ', kunyomi: 'たか(い)', usage: ['高い (たか(い))', '高校 (こうこう)'] },
-                    { kanji: '安', meaning: 'Cheap, Peaceful', onyomi: 'アン', kunyomi: 'やす(い)', usage: ['安い (やす(い))', '安心 (あんしん)'] },
-                    { kanji: '新', meaning: 'New', onyomi: 'シン', kunyomi: 'あたら(しい)', usage: ['新聞 (しん(ぶん))', '新しい (あたら(しい))'] },
-                    { kanji: '古', meaning: 'Old', onyomi: 'コ', kunyomi: 'ふる(い)', usage: ['古い (ふる(い))', '中古車 (ちゅうこしゃ)'] },
-                    { kanji: '長', meaning: 'Long, Leader', onyomi: 'チョウ', kunyomi: 'なが(い)', usage: ['長い (なが(い))', '社長 (しゃちょう)'] },
-                    { kanji: '多', meaning: 'Many, Much', onyomi: 'タ', kunyomi: 'おお(い)', usage: ['多い (おお(い))'] },
-                    { kanji: '少', meaning: 'Few, Little', onyomi: 'ショウ', kunyomi: 'すこ(し), すく(ない)', usage: ['少し (すこ(し))', '少ない (すく(ない))'] },
-                    { kanji: '広', meaning: 'Wide, Broad', onyomi: 'コウ', kunyomi: 'ひろ(い)', usage: ['広い (ひろ(い))', '広場 (ひろば)'] },
+                    { kanji: '語', meaning: 'Language, Word', onyomi: 'ゴ', kunyomi: 'かた(る)', usage: ['英語 (えい(ご))', '日本語 (にほんご)'] },
+                    { kanji: '買', meaning: 'Buy', onyomi: 'バイ', kunyomi: 'か(う)', usage: ['買い物 (か(いもの))', '買う (か(う))'] },
+                    { kanji: '読', meaning: 'Read', onyomi: 'ドク', kunyomi: 'よ(む)', usage: ['読む (よ(む))', '読書 (どくしょ)'] },
+                    { kanji: '休', meaning: 'Rest, Day Off', onyomi: 'キュウ', kunyomi: 'やす(む)', usage: ['休み (やす(み))', '休日 (きゅうじつ)'] },
+                    { kanji: '行', meaning: 'Go, Conduct', onyomi: 'コウ, ギョウ', kunyomi: 'い(く)', usage: ['銀行 (ぎん(こう))', '行く (い(く))', '旅行 (りょこう)'] },
+                    { kanji: '来', meaning: 'Come, Next', onyomi: 'ライ', kunyomi: 'く(る)', usage: ['来る (く(る))', '来月 (らいげつ)'] },
+                    { kanji: '入', meaning: 'Enter, Insert', onyomi: 'ニュウ', kunyomi: 'はい(る)', usage: ['入る (はい(る))', '入学 (にゅうがく)'] },
+                    { kanji: '出', meaning: 'Exit, Leave', onyomi: 'シュツ', kunyomi: 'で(る)', usage: ['出かける (で(かける))', '出す (だす)'] },
+                    { kanji: '会', meaning: 'Meet, Association', onyomi: 'カイ, エ', kunyomi: 'あ(う)', usage: ['会社 (かい(しゃ))', '会う (あ(う))'] },
+                    { kanji: '社', meaning: 'Company, Shrine', onyomi: 'シャ', kunyomi: 'やしろ', usage: ['会社 (かい(しゃ))'] },
+                    { kanji: '店', meaning: 'Shop, Store', onyomi: 'テン', kunyomi: 'みせ', usage: ['喫茶店 (きっさ(てん))', '店 (みせ)'] },
+                    { kanji: '駅', meaning: 'Station', onyomi: 'エキ', kunyomi: '', usage: ['駅前 (えき(まえ))'] },
                 ]
             },
             {
                 lesson: 10,
-                title: "Colors and Body (12 Kanji)",
+                title: "Direction, Colors and Body (12 Kanji)",
                 kanji: [
-                    { kanji: '早', meaning: 'Early, Fast', onyomi: 'ソウ', kunyomi: 'はや(い)', usage: ['早い (はや(い))', '早朝 (そうちょう)'] },
+                    { kanji: '道', meaning: 'Road, Way', onyomi: 'ドウ', kunyomi: 'みち', usage: ['柔道 (じゅう(どう))', '道 (みち)'] },
+                    { kanji: '国', meaning: 'Country', onyomi: 'コク', kunyomi: 'くに', usage: ['外国 (がい(こく))', '国 (くに)'] },
+                    { kanji: '広', meaning: 'Wide, Broad', onyomi: 'コウ', kunyomi: 'ひろ(い)', usage: ['広い (ひろ(い))', '広場 (ひろば)'] },
                     { kanji: '白', meaning: 'White', onyomi: 'ハク', kunyomi: 'しろ(い)', usage: ['白い (しろ(い))'] },
                     { kanji: '黒', meaning: 'Black', onyomi: 'コク', kunyomi: 'くろ(い)', usage: ['黒い (くろ(い))'] },
                     { kanji: '赤', meaning: 'Red', onyomi: 'セキ', kunyomi: 'あか(い)', usage: ['赤い (あか(い))', '赤色 (あかいろ)'] },
-                    { kanji: '青', meaning: 'Blue', onyomi: 'セイ', kunyomi: 'あお(い)', usage: ['青い (あお(い))', '青年 (せいねん)'] },
+                    { kanji: '青', meaning: 'Blue', onyomi: 'セイ', kunyomi: 'あお(い)', kunyomi: 'あお(い)', usage: ['青い (あお(い))', '青年 (せいねん)'] },
                     { kanji: '近', meaning: 'Near, Close', onyomi: 'キン', kunyomi: 'ちか(い)', usage: ['近い (ちか(い))', '近所 (きんじょ)'] },
                     { kanji: '遠', meaning: 'Far', onyomi: 'エン', kunyomi: 'とお(い)', usage: ['遠い (とお(い))', '遠足 (えんそく)'] },
                     { kanji: '体', meaning: 'Body', onyomi: 'タイ', kunyomi: 'からだ', usage: ['体 (からだ)', '体育 (たいいく)'] },
                     { kanji: '目', meaning: 'Eye', onyomi: 'モク', kunyomi: 'め', usage: ['目 (め)', '目的 (もくてき)'] },
                     { kanji: '耳', meaning: 'Ear', onyomi: 'ジ', kunyomi: 'みみ', usage: ['耳 (みみ)', '耳鼻科 (じびか)'] },
-                    { kanji: '手', meaning: 'Hand', onyomi: 'シュ', kunyomi: 'て', usage: ['上手 (じょう(ず))', '手紙 (てがみ)'] },
-                    { kanji: '足', meaning: 'Foot, Leg', onyomi: 'ソク', kunyomi: 'あし', usage: ['足 (あし)', '一足 (いっそく)'] },
                 ]
             }
         ];
@@ -1055,13 +1072,22 @@
         
         // Quiz interval state
         let quizIntervalId = null;
-        let timerDuration = 0;
-        let timerStartTime = 0;
+        let timerDuration = 0; // Total duration of the current phase (Reveal or Review)
+        let timerStartTime = 0; // Start time of the current *unpaused* countdown
+        let isTimerPaused = false; // NEW: Timer pause state
+        let pauseTime = 0; // Time remaining in milliseconds when paused
         
         // User Settings (Custom intervals)
         let userSettings = {
             revealDelay: 5, 
             reviewDelay: 4, 
+        };
+        
+        // List View Settings (NEW: Column visibility state)
+        let listVisibility = {
+            meaning: true,
+            onyomi: true,
+            kunyomi: true,
         };
 
 
@@ -1104,7 +1130,7 @@
             try {
                 localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarkedKanji));
             } catch (e) {
-                console.error("Could not save bookmarks to local storage:", e);
+                console.error("Could could not save bookmarks to local storage:", e);
             }
         }
 
@@ -1179,6 +1205,58 @@
         function stopQuizTimers() {
             clearInterval(quizIntervalId);
             quizIntervalId = null;
+            isTimerPaused = false;
+        }
+
+        /**
+         * Pauses the current running timer.
+         */
+        window.pauseTimer = function() {
+            if (quizIntervalId) {
+                // 1. Calculate remaining time precisely
+                const elapsed = Date.now() - timerStartTime;
+                pauseTime = timerDuration - elapsed; 
+                
+                stopQuizTimers();
+                isTimerPaused = true;
+                
+                // 2. Immediately update the display to show the correct remaining time
+                const timerDisplay = document.getElementById('quizTimerDisplay');
+                if (timerDisplay) {
+                     // Ensure time doesn't show negative
+                     const displayTime = Math.max(0, pauseTime / 1000);
+                     timerDisplay.textContent = `${displayTime.toFixed(1)}s (PAUSED)`;
+                }
+
+                hintText.textContent = `Timer paused. Click Resume to continue.`;
+                renderApp(); // Rerender to show Pause/Resume button state
+            }
+        }
+        
+        /**
+         * Toggles the timer state (Pause/Resume).
+         */
+        window.togglePauseResume = function() {
+            if (isTimerPaused) {
+                // Resume
+                isTimerPaused = false;
+                
+                // Get the function to call when the timer finishes (reveal or next)
+                const onCompleteFunction = quizFeedback ? handleNext : handleRevealAnswer;
+                
+                // Start interval using the pauseTime as the remaining duration
+                startQuizInterval(pauseTime, onCompleteFunction);
+                
+                if (quizFeedback) {
+                     hintText.textContent = `Reviewing answer. Advancing to next card in ${(pauseTime / 1000).toFixed(1)} seconds.`;
+                } else {
+                     hintText.textContent = `Recalling... Answer will reveal in ${(pauseTime / 1000).toFixed(1)} seconds.`;
+                }
+            } else {
+                // Pause
+                pauseTimer();
+            }
+            renderApp();
         }
 
         /**
@@ -1186,8 +1264,26 @@
          */
         function startQuizInterval(durationMs, onComplete) {
             stopQuizTimers();
+            
+            // Set the full duration of the countdown (e.g., 5000ms)
             timerDuration = durationMs;
-            timerStartTime = Date.now();
+            
+            // Determine the total duration of the original phase (needed for calculating timePassed on resume)
+            let originalPhaseDuration;
+            if (onComplete === handleRevealAnswer) {
+                originalPhaseDuration = userSettings.revealDelay * 1000;
+            } else {
+                originalPhaseDuration = userSettings.reviewDelay * 1000;
+            }
+
+            // Calculate how much time has passed since the start of the original phase
+            // If durationMs === originalPhaseDuration, then timePassed is 0 (new card start)
+            // If durationMs < originalPhaseDuration, then timePassed is the elapsed time (resume)
+            const timePassed = originalPhaseDuration - durationMs;
+            
+            // FIX: Set timerStartTime to compensate for the time already passed.
+            // This ensures elapsed = Date.now() - timerStartTime correctly measures time left.
+            timerStartTime = Date.now() - timePassed;
 
             const timerDisplay = document.getElementById('quizTimerDisplay');
             if (timerDisplay) {
@@ -1196,8 +1292,9 @@
             }
 
             quizIntervalId = setInterval(() => {
+                // Recalculate remaining time relative to the calculated start time
                 const elapsed = Date.now() - timerStartTime;
-                const remaining = durationMs - elapsed;
+                const remaining = timerDuration - elapsed;
                 
                 if (remaining <= 0) {
                     stopQuizTimers();
@@ -1245,6 +1342,8 @@
             isCardFlipped = false;
             currentKanjiIndex = 0;
             isMeaningHidden = false; // Reset flashcard state
+            // Reset List Visibility on leaving List View
+            listVisibility = {meaning: true, onyomi: true, kunyomi: true};
             renderApp();
         }
 
@@ -1259,7 +1358,11 @@
             modeControls.innerHTML = '';
             mainContent.innerHTML = '';
             navButtons.style.display = 'none';
-            stopQuizTimers(); // Ensure timers are stopped on view change
+            
+            // Only stop timers if changing away from study view, otherwise let the logic handle it
+            if (currentView !== 'study') {
+                 stopQuizTimers();
+            }
             
             // 2.5. Control Home Button visibility
             homeButton.style.display = currentView !== 'mode-select' ? 'block' : 'none';
@@ -1487,7 +1590,16 @@
             
             modeIndicator.textContent = currentMode === 'quiz' ? 'Automated Quiz' : 
                                        (currentMode === 'flashcard' ? 'Flashcard Review' : 'Kanji List');
-            progressIndicator.textContent = `${currentKanjiIndex + 1} / ${totalKanji}`;
+            
+            // UPDATED PROGRESS INDICATOR
+            if (currentMode === 'list') {
+                 // In List Mode, show current lesson progress (unchanged)
+                 const currentLesson = KANJI_LESSONS.find(l => l.lesson === selectedLessons[0]) || {title: 'Mixed Lessons'};
+                 progressIndicator.textContent = currentLesson.title.split('(')[0].trim();
+            } else {
+                 // Flashcard and Quiz Mode: Show card number / total count
+                 progressIndicator.textContent = `${currentKanjiIndex + 1} / ${totalKanji}`;
+            }
 
             // 1. Render main content based on mode
             if (currentMode === 'list') {
@@ -1532,40 +1644,130 @@
 
             // 3. Start interval if in Quiz Mode
             if (currentMode === 'quiz') {
-                if (quizFeedback) {
-                    startReviewTimer();
-                } else {
+                // Only start timer if not already paused and not already revealed
+                if (!quizFeedback && !isTimerPaused) {
                     startRevealTimer();
+                } else if (quizFeedback && !isTimerPaused) {
+                    // Resume review phase if revealed and not paused
+                    startReviewTimer();
+                } else if (isTimerPaused) {
+                    // Do nothing, but ensure buttons are rendered correctly in quiz mode
+                    hintText.textContent = `Timer paused. Click Resume to continue.`;
                 }
             }
         }
 
         // --- Core Content Renderers ---
+        
+        /**
+         * Toggles the global visibility of a column in the List View.
+         * @param {string} columnKey 'meaning', 'onyomi', or 'kunyomi'
+         */
+        window.toggleListColumn = function(columnKey) {
+            listVisibility[columnKey] = !listVisibility[columnKey];
+            renderApp();
+        }
+
+        /**
+         * Toggles the visibility of the content within a single cell.
+         * @param {Event} event The click event
+         */
+        window.toggleCellVisibility = function(event) {
+            event.stopPropagation();
+            const target = event.currentTarget;
+            const content = target.querySelector('.hidden-cell-content');
+            const placeholder = target.querySelector('.reveal-cell-placeholder');
+
+            if (content && placeholder) {
+                 // Check current state based on class presence
+                 const isContentHidden = content.classList.contains('hidden-cell-content');
+                 
+                 if (isContentHidden) {
+                     content.classList.remove('hidden-cell-content');
+                     content.classList.add('visible-cell-content');
+                     placeholder.style.display = 'none';
+                 } else {
+                     // This case is generally not needed if the column is globally visible
+                     // but included for completeness if user clicks already revealed content
+                     content.classList.add('hidden-cell-content');
+                     content.classList.remove('visible-cell-content');
+                     placeholder.style.display = 'block';
+                 }
+            }
+        }
+
 
         function renderListView(kanjiList) {
              const isBookmarkedStudy = selectedLessons.includes('bookmarks');
              const lessonData = KANJI_LESSONS.find(l => l.lesson === selectedLessons[0]) || {title: 'Mixed Lessons'};
              const lessonTitle = isBookmarkedStudy ? `Bookmarked Kanji (${kanjiList.length} total)` : lessonData.title;
 
-            // ... (rest of renderListView is unchanged)
-            
+             const getVisibilityIcon = (key) => {
+                 return listVisibility[key] 
+                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`
+                    : `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.82L9.172 14.127a3 3 0 01-3.136-3.136l4.703-4.703a3 3 0 013.136-3.136l4.703 4.703a3 3 0 01-3.136 3.136l-4.703 4.703zm-2.083-2.083l-4.703-4.703" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18s5.5-4 5.5-7.5S15.207 4.5 12 4.5 6.5 8.5 6.5 11.5 6.5 18 12 18z" /></svg>`;
+             }
+
+             const generateCellContent = (value, key) => {
+                 const isHidden = !listVisibility[key];
+                 const cellContent = key === 'usage' 
+                    ? `<ul class="list-disc list-inside space-y-1">${value.map(u => `<li>${u}</li>`).join('')}</ul>`
+                    : value;
+                 
+                 if (!isHidden) {
+                     return `<span class="visible-cell-content">${cellContent}</span>`;
+                 }
+
+                 return `
+                    <div onclick="toggleCellVisibility(event)">
+                        <span class="hidden-cell-content">${cellContent}</span>
+                        <span class="reveal-cell-placeholder">[Click to Reveal]</span>
+                    </div>
+                 `;
+             };
+
             const kanjiRows = kanjiList.map((k, index) => {
-                const usageHtml = k.usage.map(u => `<li>${u}</li>`).join('');
+                const baseClass = "px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-gray-800 dark:text-gray-200";
 
                 return `
                     <tr class="group border-b border-gray-200 dark:border-gray-700 hover:bg-indigo-50 dark:hover:bg-gray-700 transition duration-150">
+                        <!-- Kanji (Always Visible) -->
                         <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-lg font-bold text-indigo-600 dark:text-indigo-400">${k.kanji}</td>
-                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">${k.meaning}</td>
-                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap font-mono text-red-600 dark:text-red-400">${k.onyomi}</td>
-                        <td class="px-3 py-3 sm:px-6 sm:py-4 whitespace-nowrap font-mono text-blue-600 dark:text-blue-400">${k.kunyomi}</td>
+                        
+                        <!-- Meaning -->
+                        <td class="${baseClass}" data-key="meaning" onclick="${listVisibility.meaning ? '' : 'toggleCellVisibility(event)'}">
+                            ${generateCellContent(k.meaning, 'meaning')}
+                        </td>
+                        
+                        <!-- On-yomi -->
+                        <td class="${baseClass} font-mono text-red-600 dark:text-red-400" data-key="onyomi" onclick="${listVisibility.onyomi ? '' : 'toggleCellVisibility(event)'}">
+                            ${generateCellContent(k.onyomi, 'onyomi')}
+                        </td>
+                        
+                        <!-- Kun-yomi -->
+                        <td class="${baseClass} font-mono text-blue-600 dark:text-blue-400" data-key="kunyomi" onclick="${listVisibility.kunyomi ? '' : 'toggleCellVisibility(event)'}">
+                            ${generateCellContent(k.kunyomi, 'kunyomi')}
+                        </td>
+                        
+                        <!-- Usage (Always Visible) -->
                         <td class="px-3 py-3 sm:px-6 sm:py-4 text-sm text-gray-600 dark:text-gray-400">
-                             <ul class="list-disc list-inside space-y-1">
-                                 ${usageHtml}
-                             </ul>
+                             ${generateCellContent(k.usage, 'usage')}
                         </td>
                     </tr>
                 `;
             }).join('');
+            
+            // Function to generate a clickable header
+            const generateHeader = (title, key) => `
+                <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <div class="flex items-center justify-between">
+                        <span>${title}</span>
+                        ${key ? `<button onclick="toggleListColumn('${key}')" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-150" title="${listVisibility[key] ? 'Hide' : 'Show'} ${title}">
+                            ${getVisibilityIcon(key)}
+                        </button>` : ''}
+                    </div>
+                </th>
+            `;
 
             const listHtml = `
                 <div class="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-6">
@@ -1574,11 +1776,11 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kanji</th>
-                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Meaning</th>
-                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">On-yomi</th>
-                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kun-yomi</th>
-                                    <th scope="col" class="px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Usage</th>
+                                    ${generateHeader('Kanji', null)}
+                                    ${generateHeader('Meaning', 'meaning')}
+                                    ${generateHeader('On-yomi', 'onyomi')}
+                                    ${generateHeader('Kun-yomi', 'kunyomi')}
+                                    ${generateHeader('Usage', 'usage')}
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -1603,6 +1805,10 @@
             
             const usageItems = kanjiData.usage.map(u => `<li class="text-base sm:text-lg font-medium text-gray-800 dark:text-gray-100">${u}</li>`).join('');
             const isBookmarked = bookmarkedKanji.includes(kanjiData.kanji);
+            
+            const frontCardMeaningDisplay = isMeaningHidden ? '— Meaning Hidden —' : kanjiData.meaning;
+            const cardCountDisplay = `${currentKanjiIndex + 1} / ${studyKanjiList.length}`;
+
 
             // Flashcard controls (Bookmark and Meaning Toggle)
             const flashcardControls = `
@@ -1628,16 +1834,21 @@
                         
                         <!-- Front Side: Kanji and Meaning -->
                         <div class="absolute w-full h-full flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-2xl backface-hidden">
-                            <p class="text-xs font-semibold text-indigo-500 dark:text-indigo-400 mb-2">${lessonTitle}</p>
+                            <!-- Card Count -->
+                            <p class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">${cardCountDisplay}</p>
+                            
                             <p class="text-7xl sm:text-9xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">${kanjiData.kanji}</p>
                             <h2 class="text-2xl font-semibold tracking-wider text-gray-700 dark:text-gray-300">
-                                ${!isCardFlipped && isMeaningHidden ? '— Meaning Hidden —' : kanjiData.meaning}
+                                ${frontCardMeaningDisplay}
                             </h2>
                             <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">Tap to see details</p>
                         </div>
 
                         <!-- Back Side: Readings and Usage -->
                         <div class="card-back absolute w-full h-full flex flex-col items-center justify-start p-6 bg-indigo-50 dark:bg-gray-700 text-gray-900 dark:text-white rounded-2xl backface-hidden overflow-y-auto">
+                            <!-- Full Lesson Title at the Top -->
+                            <p class="text-xs font-semibold text-indigo-700 dark:text-indigo-400 mb-3 text-center">${lessonTitle}</p>
+
                             <h3 class="text-xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">${kanjiData.meaning}</h3>
                             <div class="w-full space-y-3 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                                 <p class="text-lg font-medium">
@@ -1666,6 +1877,14 @@
         function renderQuizMode(kanjiData) {
             const lesson = KANJI_LESSONS.find(l => l.kanji.some(k => k.kanji === kanjiData.kanji));
             const lessonTitle = selectedLessons.includes('bookmarks') ? 'Bookmarked Cards' : (lesson ? `Lesson ${lesson.lesson}: ${lesson.title}` : 'Mixed Lessons');
+            const cardCountDisplay = `${currentKanjiIndex + 1} / ${studyKanjiList.length}`;
+            
+            const timerButtonHtml = !quizFeedback ? `
+                <button onclick="togglePauseResume()" class="py-2 px-3 text-xs font-semibold rounded-lg transition duration-150 
+                    ${isTimerPaused ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'} shadow-md">
+                    ${isTimerPaused ? 'Resume Timer' : 'Pause Timer'}
+                </button>
+            ` : '';
 
             let quizContentHtml;
             
@@ -1694,7 +1913,7 @@
                             </p>
                         </div>
                         
-                        <div class="p-4 bg-indigo-100 dark:bg-gray-900 rounded-lg w-full">
+                        <div class="mt-6 p-4 bg-indigo-100 dark:bg-gray-900 rounded-lg w-full">
                             <p class="text-sm font-semibold text-indigo-800 dark:text-indigo-200 mb-1">Usage:</p>
                             <ul class="space-y-2 list-disc list-inside text-left">
                                 ${usageItems}
@@ -1721,12 +1940,28 @@
 
             const quizHtml = `
                 <div class="max-w-md w-full p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg relative">
-                    <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 text-center">${lessonTitle}</h3>
+                    <!-- PROGRESS AND TITLE ARE ALWAYS VISIBLE ON QUIZ CARD FRONT/TOP -->
+                    <div class="flex justify-between items-center mb-3">
+                         <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400">${lessonTitle}</h3>
+                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400">${cardCountDisplay}</h3>
+                    </div>
                     
                     ${quizContentHtml}
                 </div>
             `;
-            mainContent.innerHTML = quizHtml;
+            
+            // Add pause/resume button right under the quiz content (if applicable)
+            if (!quizFeedback) {
+                 mainContent.innerHTML = `
+                    ${quizHtml}
+                    <div class="mt-6">
+                        ${timerButtonHtml}
+                    </div>
+                 `;
+            } else {
+                 mainContent.innerHTML = quizHtml;
+            }
+            
         }
 
 
@@ -1773,11 +2008,7 @@
             const studyingBookmarks = newlySelectedLessons.includes('bookmarks');
             if (studyingBookmarks) {
                 selectedLessons = ['bookmarks'];
-            } else {
-                // Filter out any potential 'bookmarks' string if it somehow slipped through
-                selectedLessons = newlySelectedLessons.filter(l => typeof l === 'number');
             }
-            
             // For List, ensure only one lesson is selected
             if (currentMode === 'list') {
                 // List mode cannot use 'bookmarks', force back to Lesson 1 if bookmarks was selected
@@ -1785,9 +2016,16 @@
                      selectedLessons = [KANJI_LESSONS[0].lesson];
                 }
                 if (selectedLessons.length > 1) {
-                    const firstNumeric = selectedLessons.find(l => typeof l === 'number');
+                    const firstNumeric = newlySelectedLessons.find(l => typeof l === 'number');
                     selectedLessons = [firstNumeric || KANJI_LESSONS[0].lesson];
+                } else {
+                    selectedLessons = newlySelectedLessons.filter(l => typeof l === 'number');
                 }
+            }
+
+            // Ensure selection only contains numeric lessons if not studying bookmarks
+            if (!studyingBookmarks && currentMode !== 'list') {
+                 selectedLessons = newlySelectedLessons.filter(l => typeof l === 'number');
             }
 
 
@@ -1801,6 +2039,11 @@
             currentKanjiIndex = 0;
             quizFeedback = null; 
             currentView = 'study';
+            
+            // Reset pause state when starting a new quiz
+            isTimerPaused = false; 
+            pauseTime = 0; 
+            
             renderApp();
         }
 
@@ -1851,6 +2094,10 @@
                  }
             }
             
+            // Reset pause state for the next card
+            isTimerPaused = false;
+            pauseTime = 0;
+
             renderApp();
         }
 
