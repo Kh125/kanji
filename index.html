@@ -269,6 +269,40 @@
       </div>
     </div>
 
+    <!-- Kanji Detail Modal Overlay -->
+    <div
+      id="kanjiDetailModal"
+      class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300"
+      style="display: none"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-xl relative"
+      >
+        <button
+          onclick="closeKanjiDetailModal()"
+          class="absolute top-3 right-3 p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          aria-label="Close Kanji Details"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <div id="kanjiDetailContent" class="space-y-4"></div>
+      </div>
+    </div>
+
     <script>
       // --- KANJI DATA ---
       const KANJI_DATA = {
@@ -3008,120 +3042,6 @@
               },
               {
                 kanji: "使",
-                meaning: "Use, Send (on an errand)",
-                onyomi: "シ",
-                kunyomi: "つか-う",
-                usage: [
-                  "使う (つかう)",
-                  "大使館 (たいしかん)",
-                  "使用中 (しようちゅう)",
-                ],
-              },
-              {
-                kanji: "作",
-                meaning: "Make, Produce",
-                onyomi: "サク, サッ",
-                kunyomi: "つく-る",
-                usage: ["作る (つくる)", "作文 (さくぶん)", "作家 (さっか)"],
-              },
-              {
-                kanji: "化",
-                meaning: "Change, Transform",
-                onyomi: "カ, ケ",
-                kunyomi: "か-わる, ば-ける",
-                usage: [
-                  "化ける (ばける)",
-                  "文化 (ぶんか)",
-                  "化学 (かがく)",
-                  "映画 (えいが)",
-                ],
-              },
-              {
-                kanji: "信",
-                meaning: "Trust, Believe",
-                onyomi: "シン",
-                kunyomi: "しん-じる",
-                usage: [
-                  "信じる (しんじる)",
-                  "自信 (じしん)",
-                  "通信 (つうしん)",
-                ],
-              },
-              {
-                kanji: "進",
-                meaning: "Advance, Proceed",
-                onyomi: "シン",
-                kunyomi: "すす-む, すす-める",
-                usage: [
-                  "進む (すすむ)",
-                  "進歩 (しんぽ)",
-                  "先進国 (せんしんこく)",
-                ],
-              },
-              {
-                kanji: "送",
-                meaning: "Send, Deliver",
-                onyomi: "ソウ",
-                kunyomi: "おく-る",
-                usage: [
-                  "送る (おくる)",
-                  "送金 (そうきん)",
-                  "放送 (ほうそう)",
-                  "送信 (そうしん)",
-                ],
-              },
-              {
-                kanji: "返",
-                meaning: "Return, Repay",
-                onyomi: "ヘン",
-                kunyomi: "かえ-す, かえ-る",
-                usage: [
-                  "返す (かえす)",
-                  "返却 (へんきゃく)",
-                  "返品 (へんぴん)",
-                ],
-              },
-              {
-                kanji: "洗",
-                meaning: "Wash",
-                onyomi: "セン",
-                kunyomi: "あら-う",
-                usage: [
-                  "洗う (あらう)",
-                  "手洗い (てあらい)",
-                  "洗濯 (せんたく)",
-                ],
-              },
-              {
-                kanji: "注",
-                meaning: "Pour, Focus, Attention",
-                onyomi: "チュウ",
-                kunyomi: "そそ-ぐ",
-                usage: [
-                  "注ぐ (そそぐ)",
-                  "注意する (ちゅういする)",
-                  "注射 (ちゅうしゃ)",
-                ],
-              },
-            ],
-          },
-          {
-            lesson: 15,
-            title: "Actions, Technology, and Movement (Kanji 251-260)",
-            kanji: [
-              {
-                kanji: "代",
-                meaning: "Substitute, Change, Era",
-                onyomi: "ダイ, タイ",
-                kunyomi: "か-わる, か-える",
-                usage: [
-                  "代わる (かわる)",
-                  "時代 (じだい)",
-                  "ガス代 (ガスだい)",
-                ],
-              },
-              {
-                kanji: "使",
                 meaning: "Use (usar)",
                 onyomi: "シ",
                 kunyomi: "つか-う",
@@ -3747,6 +3667,9 @@
       // List View search state
       let listSearchQuery = "";
 
+      // Overview shuffle cache: level -> lesson -> shuffled array
+      let overviewShuffleMap = {};
+
       // --- DOM Elements ---
       const appContainer = document.getElementById("app-container");
       const darkModeToggle = document.getElementById("darkModeToggle");
@@ -3773,6 +3696,15 @@
       // --- Utility Functions ---
 
       const BOOKMARKS_KEY = "jlptKanjiBookmarks";
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
 
       function loadBookmarks() {
         try {
@@ -4016,6 +3948,8 @@
           usage: true,
         };
         listSearchQuery = "";
+        overviewShuffleMap = {};
+        closeKanjiDetailModal();
         renderApp();
       }
 
@@ -4131,6 +4065,13 @@
             description:
               "Test your recall using timed intervals for reveal and review, based on your settings.",
           },
+          {
+            mode: "overview",
+            title: "Kanji Overview",
+            icon: "🎯",
+            description:
+              "Glance at every lesson row by row and click any kanji to open its full details.",
+          },
         ];
 
         const cardsHtml = modeCards
@@ -4145,7 +4086,7 @@
           )
           .join("");
 
-        mainContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">${cardsHtml}</div>`;
+        mainContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-4xl mx-auto">${cardsHtml}</div>`;
       }
 
       function renderLessonSelectPage() {
@@ -4325,6 +4266,8 @@
         const totalKanji = studyKanjiList.length;
         const currentKanji = studyKanjiList[currentKanjiIndex] || {};
         const KANJI_LESSONS = KANJI_DATA[currentJLPTLevel];
+        const isOverviewMode = currentMode === "overview";
+        hintText.textContent = "";
 
         if (totalKanji === 0) {
           // Handle empty bookmark list gracefully
@@ -4337,12 +4280,15 @@
           return;
         }
 
-        modeIndicator.textContent =
-          currentMode === "quiz"
-            ? "Automated Quiz"
-            : currentMode === "flashcard"
-            ? "Flashcard Review"
-            : "Kanji List";
+        if (currentMode === "quiz") {
+          modeIndicator.textContent = "Automated Quiz";
+        } else if (currentMode === "flashcard") {
+          modeIndicator.textContent = "Flashcard Review";
+        } else if (isOverviewMode) {
+          modeIndicator.textContent = "Kanji Overview";
+        } else {
+          modeIndicator.textContent = "Kanji List";
+        }
 
         // UPDATED PROGRESS INDICATOR
         if (currentMode === "list") {
@@ -4353,6 +4299,12 @@
           progressIndicator.textContent = currentLesson.title
             .split("(")[0]
             .trim();
+        } else if (isOverviewMode) {
+          const overviewCount = KANJI_LESSONS.reduce(
+            (sum, lesson) => sum + lesson.kanji.length,
+            0
+          );
+          progressIndicator.textContent = `${overviewCount} Kanji`;
         } else {
           // Flashcard and Quiz Mode: Show card number / total count
           progressIndicator.textContent = `${
@@ -4363,6 +4315,8 @@
         // 1. Render main content based on mode
         if (currentMode === "list") {
           renderListView(studyKanjiList);
+        } else if (isOverviewMode) {
+          renderOverviewMode();
         } else if (currentMode === "flashcard") {
           renderFlashcard(currentKanji);
         } else {
@@ -4370,7 +4324,7 @@
         }
 
         // 2. Setup navigation buttons
-        navButtons.style.display = "flex";
+        navButtons.style.display = isOverviewMode ? "none" : "flex";
 
         // Label buttons based on mode
         if (currentMode === "list") {
@@ -4386,7 +4340,7 @@
           hintText.textContent = !isCardFlipped
             ? "Tap the card to reveal the readings and usage."
             : "";
-        } else {
+        } else if (currentMode === "quiz") {
           // Quiz Mode - Navigation is disabled because it's automated
           prevButton.textContent = "Exit Quiz";
           nextButton.textContent = "Quiz Active";
@@ -4407,7 +4361,12 @@
           prevButton.disabled = false;
         }
 
-        if (currentMode !== "quiz") {
+        if (isOverviewMode) {
+          hintText.textContent =
+            "Click any kanji to view readings, meanings, and usage.";
+        }
+
+        if (!isOverviewMode && currentMode !== "quiz") {
           prevButton.classList.remove(
             "bg-red-600",
             "hover:bg-red-700",
@@ -4486,6 +4445,243 @@
         }
       };
 
+      window.shuffleOverviewKanji = function () {
+        if (currentMode !== "overview") {
+          return;
+        }
+
+        const lessons = KANJI_DATA[currentJLPTLevel] || [];
+        const combinedKanji = lessons.flatMap((lesson) =>
+          lesson.kanji.map((k) => ({
+            lesson: lesson.lesson,
+            kanji: k.kanji,
+          }))
+        );
+
+        overviewShuffleMap = {
+          ...overviewShuffleMap,
+          [currentJLPTLevel]: shuffleArray([...combinedKanji]),
+        };
+
+        renderApp();
+      };
+
+      window.resetOverviewKanjiOrder = function () {
+        if (currentMode !== "overview") {
+          return;
+        }
+
+        const lessons = KANJI_DATA[currentJLPTLevel] || [];
+        const combinedKanji = lessons.flatMap((lesson) =>
+          lesson.kanji.map((k) => ({
+            lesson: lesson.lesson,
+            kanji: k.kanji,
+          }))
+        );
+
+        overviewShuffleMap = {
+          ...overviewShuffleMap,
+          [currentJLPTLevel]: combinedKanji,
+        };
+
+        renderApp();
+      };
+
+      function closeKanjiDetailModal() {
+        const modal = document.getElementById("kanjiDetailModal");
+        if (!modal) return;
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+      }
+
+      window.closeKanjiDetailModal = closeKanjiDetailModal;
+
+      window.showKanjiDetail = function (level, lessonNumber, kanjiChar) {
+        const lessons = KANJI_DATA[level] || [];
+        const lesson = lessons.find((l) => l.lesson === lessonNumber) || null;
+        const kanjiData = lesson
+          ? lesson.kanji.find((k) => k.kanji === kanjiChar)
+          : null;
+
+        if (!kanjiData) {
+          showToast("Kanji details not found.", "bg-red-600");
+          return;
+        }
+
+        const modal = document.getElementById("kanjiDetailModal");
+        const content = document.getElementById("kanjiDetailContent");
+
+        if (!modal || !content) {
+          console.error("Kanji detail modal elements are missing.");
+          return;
+        }
+
+        const safeMeaning = kanjiData.meaning
+          ? escapeHtml(kanjiData.meaning)
+          : "—";
+        const safeOnyomi = kanjiData.onyomi
+          ? escapeHtml(kanjiData.onyomi)
+          : "—";
+        const safeKunyomi = kanjiData.kunyomi
+          ? escapeHtml(kanjiData.kunyomi)
+          : "—";
+        const usageSection =
+          Array.isArray(kanjiData.usage) && kanjiData.usage.length
+            ? `<ul class="list-disc list-inside space-y-1">${kanjiData.usage
+                .map(
+                  (u) =>
+                    `<li class="text-sm sm:text-base text-gray-700 dark:text-white">${escapeHtml(
+                      u
+                    )}</li>`
+                )
+                .join("")}</ul>`
+            : `<p class="text-sm text-gray-500 dark:text-gray-400 italic">Usage examples coming soon.</p>`;
+
+        const lessonTitle = lesson ? escapeHtml(lesson.title) : "";
+
+        content.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wide text-indigo-500 dark:text-indigo-300">Lesson ${lessonNumber}</p>
+              <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-2">${escapeHtml(
+                kanjiData.kanji
+              )}</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400">${lessonTitle}</p>
+              <p class="mt-3 text-lg font-semibold text-gray-900 dark:text-white">${safeMeaning}</p>
+            </div>
+            <div class="text-6xl sm:text-7xl font-bold text-indigo-600 dark:text-indigo-400 self-start sm:self-center">${escapeHtml(
+              kanjiData.kanji
+            )}</div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-4 rounded-lg bg-indigo-50 dark:bg-gray-900">
+              <p class="text-xs font-semibold text-indigo-500 dark:text-indigo-300 uppercase tracking-wide">On-yomi</p>
+              <p class="mt-1 text-lg font-mono text-red-600 dark:text-red-400">${safeOnyomi}</p>
+            </div>
+            <div class="p-4 rounded-lg bg-blue-50 dark:bg-gray-900">
+              <p class="text-xs font-semibold text-blue-500 dark:text-blue-300 uppercase tracking-wide">Kun-yomi</p>
+              <p class="mt-1 text-lg font-mono text-blue-600 dark:text-blue-400">${safeKunyomi}</p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-900">
+            <p class="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide mb-1">Usage</p>
+            ${usageSection}
+          </div>
+        `;
+
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      };
+
+      function renderOverviewMode() {
+        const lessons = KANJI_DATA[currentJLPTLevel] || [];
+
+        if (!lessons.length) {
+          mainContent.innerHTML = `
+            <div class="w-full max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center">
+              <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">No kanji lessons found for this level.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const combinedKanji = lessons.flatMap((lesson) =>
+          lesson.kanji.map((k) => ({
+            lesson: lesson.lesson,
+            kanji: k.kanji,
+          }))
+        );
+
+        if (
+          !Array.isArray(overviewShuffleMap[currentJLPTLevel]) ||
+          !overviewShuffleMap[currentJLPTLevel].length
+        ) {
+          overviewShuffleMap[currentJLPTLevel] = combinedKanji;
+        }
+
+        const currentOrder = overviewShuffleMap[currentJLPTLevel];
+        const totalKanjiCount = currentOrder.length;
+
+        const chunkKanji = (array, size) => {
+          const chunks = [];
+          for (let i = 0; i < array.length; i += size) {
+            chunks.push(array.slice(i, i + size));
+          }
+          return chunks;
+        };
+
+        const rowsHtml = chunkKanji(currentOrder, 10)
+          .map((row) => {
+            const cells = row
+              .map(
+                (entry) => `
+                  <td class="border border-gray-200 dark:border-gray-700 p-2 text-center align-middle">
+                    <button
+                      type="button"
+                      class="w-full h-12 text-2xl font-bold rounded-md bg-gray-100 hover:bg-indigo-100 dark:bg-gray-700 dark:hover:bg-indigo-600 transition duration-150"
+                      data-level="${currentJLPTLevel}"
+                      data-lesson="${entry.lesson}"
+                      data-kanji="${escapeHtml(entry.kanji)}"
+                      onclick="showKanjiDetail(this.dataset.level, parseInt(this.dataset.lesson, 10), this.dataset.kanji)"
+                      title="View details"
+                    >
+                      ${escapeHtml(entry.kanji)}
+                    </button>
+                  </td>
+                `
+              )
+              .join("");
+
+            const emptyCellsCount = 10 - row.length;
+            const emptyCells = emptyCellsCount
+              ? new Array(emptyCellsCount)
+                  .fill(
+                    `<td class="border border-gray-200 dark:border-gray-700 p-2"></td>`
+                  )
+                  .join("")
+              : "";
+
+            return `<tr>${cells}${emptyCells}</tr>`;
+          })
+          .join("");
+
+        mainContent.innerHTML = `
+          <div class="w-full space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 px-4 py-4">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">All Kanji Overview</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">${totalKanjiCount} kanji</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <button
+                  type="button"
+                  onclick="shuffleOverviewKanji()"
+                  class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow hover:bg-indigo-700 transition duration-150"
+                >
+                  Shuffle Kanji
+                </button>
+                <button
+                  type="button"
+                  onclick="resetOverviewKanjiOrder()"
+                  class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gray-200 text-gray-800 text-sm font-semibold shadow hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition duration-150"
+                >
+                  Reset Order
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+              <table class="w-full table-fixed border-collapse">
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
       function renderListView(kanjiList) {
         const isBookmarkedStudy = selectedLessons.includes("bookmarks");
         const KANJI_LESSONS = KANJI_DATA[currentJLPTLevel];
@@ -4495,14 +4691,6 @@
         const lessonTitle = isBookmarkedStudy
           ? `Bookmarked Kanji (${kanjiList.length} total)`
           : lessonData.title;
-
-        const escapeHtml = (value) =>
-          String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;");
 
         const filteredKanji = kanjiList.filter((k) => {
           const query = listSearchQuery.trim().toLowerCase();
@@ -4532,11 +4720,7 @@
         const generateCellContent = (value, key) => {
           const isHidden = !listVisibility[key];
           const resolvedValue =
-            key === "usage"
-              ? Array.isArray(value)
-                ? value
-                : []
-              : value ?? "";
+            key === "usage" ? (Array.isArray(value) ? value : []) : value ?? "";
 
           const cellContent =
             key === "usage"
@@ -4607,7 +4791,7 @@
           })
           .join("");
 
-    const emptyStateRow = `
+        const emptyStateRow = `
         <tr>
           <td colspan="5" class="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
             No kanji matched your search.
@@ -4633,12 +4817,14 @@
                 </th>
             `;
 
-    const listHtml = `
+        const listHtml = `
         <div class="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 sm:p-6 space-y-4">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>
               <h2 class="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">${lessonTitle}</h2>
-              <p class="text-sm text-gray-500 dark:text-gray-400">${filteredKanji.length} of ${kanjiList.length} kanji visible</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">${
+                filteredKanji.length
+              } of ${kanjiList.length} kanji visible</p>
             </div>
             <label class="relative w-full md:w-72">
               <span class="sr-only">Search kanji</span>
@@ -4903,6 +5089,7 @@
 
       function handleLevelSelect(level) {
         currentJLPTLevel = level;
+        overviewShuffleMap = {};
         currentView = "mode-select";
         renderApp();
       }
@@ -4923,6 +5110,17 @@
           } else {
             selectedLessons = KANJI_LESSONS.map((l) => l.lesson);
           }
+        } else if (currentMode === "overview") {
+          selectedLessons = KANJI_LESSONS.map((l) => l.lesson);
+          compileStudyList();
+          currentKanjiIndex = 0;
+          quizFeedback = null;
+          currentView = "study";
+          isMeaningHidden = false;
+          isTimerPaused = false;
+          pauseTime = 0;
+          renderApp();
+          return;
         }
 
         currentView = "lesson-select";
@@ -5013,6 +5211,9 @@
       }
 
       function handleNext() {
+        if (currentMode === "overview") {
+          return;
+        }
         isCardFlipped = false;
         quizFeedback = null;
         stopQuizTimers();
@@ -5064,6 +5265,9 @@
       }
 
       function handlePrev() {
+        if (currentMode === "overview") {
+          return;
+        }
         isCardFlipped = false;
         quizFeedback = null;
         stopQuizTimers();
@@ -5158,6 +5362,21 @@
           () => (settingsModal.style.display = "none")
         );
         saveSettingsButton.addEventListener("click", handleSaveSettings);
+
+        const kanjiDetailModal = document.getElementById("kanjiDetailModal");
+        if (kanjiDetailModal) {
+          kanjiDetailModal.addEventListener("click", (event) => {
+            if (event.target === kanjiDetailModal) {
+              closeKanjiDetailModal();
+            }
+          });
+        }
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeKanjiDetailModal();
+          }
+        });
 
         // Main navigation
         document
